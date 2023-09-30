@@ -22,9 +22,12 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     
     [SerializeField] private List<GameObject> towers;
+    [SerializeField] private List<Placeable> placeables;
     [SerializeField] private Grid grid;
     [SerializeField] private Tilemap tilemap;
-    
+
+    public IReadOnlyList<Placeable> Placeables => placeables;
+
     private int numEnemies;
     private int wave;
     private GameState gameState;
@@ -75,6 +78,11 @@ public class GameController : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public void OnPlaceableDie(Placeable placeable)
+    {
+        placeables.Remove(placeable);
     }
 
     public void OnEnemyDie()

@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[SerializeField]
+public struct EnemyStats
+{
+    public float Damage;
+    public float Speed;
+    public float AttackInterval;
+
+    public static EnemyStats Default => new() { Damage = 10, Speed = 5, AttackInterval = 1 };
+}
+
 public class EnemyMovement : MonoBehaviour
 {
     private static List<Vector3Int> directions = new List<Vector3Int>()
@@ -9,25 +19,24 @@ public class EnemyMovement : MonoBehaviour
         Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right
     };
 
-    [SerializeField] private float speed=5f;
+    [SerializeField] EnemyStats stats = EnemyStats.Default;
 
     private List<Vector3Int> path;
     private Vector3 to;
 
+    Placeable target;
+
+    float nextAttackTime = Mathf.NegativeInfinity;
+
     void Start()
     {
-        path = GetPath(
-            GetClosestTarget(GameController.gameController.GetTowers())
-        );
-        to = this.transform.position;
-        if (path == null) {
-            Debug.LogError($"No path found for {this.gameObject.name}");
-            Destroy(this.gameObject);
-        }
+        TargetNewPlaceable();
     }
 
     void Update()
     {
+        if (path == null) return;
+
         if (path.Count == 0)
         {
             AttackTarget();
@@ -41,13 +50,36 @@ public class EnemyMovement : MonoBehaviour
         else
         {
             // Debug.Log($"Moving towards {to}");
-            this.transform.position = Vector3.MoveTowards(this.transform.position, to, Time.deltaTime * speed);
+            this.transform.position = Vector3.MoveTowards(this.transform.position, to, Time.deltaTime * stats.Speed);
+        }
+    }
+
+    void TargetNewPlaceable()
+    {
+        path = null;
+        nextAttackTime = Mathf.NegativeInfinity;
+        target = GetClosestTarget(GameController.gameController.Placeables);
+        if(target != null)
+        {
+            path = GetPath(target.gameObject);
+            to = this.transform.position;
         }
     }
 
     void AttackTarget()
     {
-        /* TODO */    
+        if (target == null)
+        {
+            TargetNewPlaceable();
+            return;
+        }
+
+        Debug.Log("ATTACK");
+        if(Time.time > nextAttackTime)
+        {
+            target.Damage(stats.Damage);
+            nextAttackTime = Time.time + stats.AttackInterval;
+        }
     }
 
     bool IsValid(Vector3Int cell)
@@ -62,7 +94,7 @@ public class EnemyMovement : MonoBehaviour
     List<Vector3Int> GetPath (GameObject target)
     {
         Vector3Int curPos = GameController.gameController.GetGrid().WorldToCell(this.transform.position);
-        Vector3Int targetPos = GameController.gameController.GetGrid().WorldToCell(GetClosestTarget(GameController.gameController.GetTowers()).transform.position);
+        Vector3Int targetPos = GameController.gameController.GetGrid().WorldToCell(target.transform.position);
 
         Vector3Int cur = curPos;
         Vector3Int next = curPos;
@@ -101,7 +133,7 @@ public class EnemyMovement : MonoBehaviour
         return null;
     }
 
-    GameObject GetClosestTarget(List<GameObject> targets)
+    Placeable GetClosestTarget(IReadOnlyList<Placeable> targets)
     {
         if (targets.Count == 0) 
         {
@@ -109,11 +141,11 @@ public class EnemyMovement : MonoBehaviour
             return null;
         }
 
-        GameObject closest = null;
+        Placeable closest = null;
         float distance = float.MaxValue;
         float newDistance;
 
-        foreach (GameObject target in targets)
+        foreach (var target in targets)
         {
             newDistance = Vector3.Distance(this.transform.position, target.transform.position);
             if (newDistance < distance)

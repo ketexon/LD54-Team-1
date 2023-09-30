@@ -17,6 +17,8 @@ public class DropPool
 [CreateAssetMenu(fileName = "DropSettings", menuName = "Drops/DropSettings", order = 0)]
 public class DropSettingsSO : ScriptableObject
 {
+    public int MetalSpriteIndex;
+    public int EnergySpriteIndex;
     public List<DropPool> Pools;
 
     // cached value (we assume Pools is immutable after enable)

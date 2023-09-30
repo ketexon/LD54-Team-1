@@ -25,4 +25,9 @@ public class GridCell : MonoBehaviour
             placeable.AttachToCell(this);
         }
     }
+
+    public void OnPlaceableDie()
+    {
+        Placeable = null;
+    }
 }
