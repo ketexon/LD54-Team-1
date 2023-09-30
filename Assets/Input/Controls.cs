@@ -71,6 +71,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SpawnWave"",
+                    ""type"": ""Button"",
+                    ""id"": ""260ae8db-634b-4190-818e-e913f2f2622b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -128,6 +137,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Scroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9da983ec-b88d-4f0b-b504-8810ce84aff0"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KBM"",
+                    ""action"": ""SpawnWave"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -158,6 +178,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Gameplay_MMB = m_Gameplay.FindAction("MMB", throwIfNotFound: true);
         m_Gameplay_MouseMove = m_Gameplay.FindAction("MouseMove", throwIfNotFound: true);
         m_Gameplay_Scroll = m_Gameplay.FindAction("Scroll", throwIfNotFound: true);
+        m_Gameplay_SpawnWave = m_Gameplay.FindAction("SpawnWave", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -224,6 +245,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_MMB;
     private readonly InputAction m_Gameplay_MouseMove;
     private readonly InputAction m_Gameplay_Scroll;
+    private readonly InputAction m_Gameplay_SpawnWave;
     public struct GameplayActions
     {
         private @Controls m_Wrapper;
@@ -233,6 +255,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @MMB => m_Wrapper.m_Gameplay_MMB;
         public InputAction @MouseMove => m_Wrapper.m_Gameplay_MouseMove;
         public InputAction @Scroll => m_Wrapper.m_Gameplay_Scroll;
+        public InputAction @SpawnWave => m_Wrapper.m_Gameplay_SpawnWave;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -257,6 +280,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Scroll.started += instance.OnScroll;
             @Scroll.performed += instance.OnScroll;
             @Scroll.canceled += instance.OnScroll;
+            @SpawnWave.started += instance.OnSpawnWave;
+            @SpawnWave.performed += instance.OnSpawnWave;
+            @SpawnWave.canceled += instance.OnSpawnWave;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -276,6 +302,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Scroll.started -= instance.OnScroll;
             @Scroll.performed -= instance.OnScroll;
             @Scroll.canceled -= instance.OnScroll;
+            @SpawnWave.started -= instance.OnSpawnWave;
+            @SpawnWave.performed -= instance.OnSpawnWave;
+            @SpawnWave.canceled -= instance.OnSpawnWave;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -309,5 +338,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnMMB(InputAction.CallbackContext context);
         void OnMouseMove(InputAction.CallbackContext context);
         void OnScroll(InputAction.CallbackContext context);
+        void OnSpawnWave(InputAction.CallbackContext context);
     }
 }
