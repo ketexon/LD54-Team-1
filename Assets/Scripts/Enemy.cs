@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour, IHealthEntity
 {
+    [SerializeField] DropSettingsSO dropSettings;
+    [SerializeField] GameObject dropIndicatorPrefab;
+
     protected static float MAX_HEALTH = 100f;
     
     private float health;
@@ -34,11 +37,24 @@ public class Enemy : MonoBehaviour, IHealthEntity
 
     public void Die()
     {
+        SpawnDrop();
         Destroy(this.gameObject);
     }
 
     void OnDestroy()
     {
         GameController.gameController.OnEnemyDie();
+    }
+
+    void SpawnDrop()
+    {
+        DropSO drop = dropSettings.GetRandomDrop();
+        if (drop != null)
+        {
+            var indicatorGo = Instantiate(dropIndicatorPrefab, transform.position, Quaternion.identity);
+            var indicator = indicatorGo.GetComponent<DropIndicator>();
+            indicator.Drop = drop;
+            ResourceManager.Instance.AddDrop(drop);
+        }
     }
 }

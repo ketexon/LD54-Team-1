@@ -47,6 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bdbc8e5e5219d41b3a2a6b9c8f5536, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropSettings: {fileID: 11400000, guid: 165ad3ed5e9e9344b88da731caf155ae, type: 2}
+  dropIndicatorPrefab: {fileID: 3276284391420294907, guid: 5c3989b927e82dd4ab09f4ba2e0eab06, type: 3}
 --- !u!114 &158018255367937244
 MonoBehaviour:
   m_ObjectHideFlags: 0
