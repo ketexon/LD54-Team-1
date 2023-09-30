@@ -51,21 +51,36 @@ public class GameController : MonoBehaviour
                 spawnPoints.Add(new Vector3Int(x, y, 0));
             }
         }
-        wave = 0;
+        wave = 5;
         numEnemies = 0;
         gameState = GameState.Farming;
     }
 
-    // void Start()
-    // {
-        
-    // }
+    void Start()
+    {
+        StartNextWave();   
+    }
     
-    // void Update()
-    // {
-    // }
+    void Update()
+    {
+
+    }
+
+    public void OnEnemyDie()
+    {
+        numEnemies--;
+        if (numEnemies == 0)
+        {
+            gameState = GameState.Farming;
+        }
+    }
 
     public void StartNextWave()
+    {
+        StartCoroutine(SpawnEnemies());
+    }
+
+    IEnumerator SpawnEnemies()
     {
         if (gameState == GameState.Farming)
         {
@@ -76,16 +91,17 @@ public class GameController : MonoBehaviour
                 pos = GetRandomSpawnPoint();
                 GameObject.Instantiate(enemyPrefab, pos, Quaternion.identity);
                 numEnemies++;
+                yield return new WaitForSeconds(.59f);
             }
+            gameState = GameState.Defending;
         }
+        yield return null;
     }
 
     Vector3Int GetRandomSpawnPoint()
     {
         return spawnPoints[Random.Range(0, spawnPoints.Count)];
     }
-
-    public void OnEnemyDie() { numEnemies--; }
 
     /* Getters */
     public List<GameObject> GetTowers() { return towers; }
