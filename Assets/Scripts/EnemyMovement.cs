@@ -12,7 +12,6 @@ public class EnemyMovement : MonoBehaviour
     // Targets is temp so we can test pathfinding, we will have to dynamically update the targets in a gamecontroller
     [SerializeField] private List<GameObject> targets;
     [SerializeField] private float speed=5f;
-    [SerializeField] private Grid grid;
 
     private List<Vector3Int> path;
     private Vector3 to;
@@ -20,19 +19,13 @@ public class EnemyMovement : MonoBehaviour
     void Start()
     {
         path = GetPath(
-            GetClosestTarget(targets)
+            GetClosestTarget(GameController.gameController.GetTowers())
         );
         to = this.transform.position;
         if (path == null) {
             Debug.LogError($"No path found for {this.gameObject.name}");
             Destroy(this.gameObject);
         }
-        string str = "";
-        foreach (var p in path)
-        {
-            str += p.ToString() + ", ";
-        }
-        Debug.Log($"Recieved path {str}");
     }
 
     void Update()
@@ -43,17 +36,22 @@ public class EnemyMovement : MonoBehaviour
         }
         else if (this.transform.position == to)
         {
-            Debug.Log($"Reached {to}");
-            to = grid.GetCellCenterWorld(path[path.Count - 1]);
+            // Debug.Log($"Reached {to}");
+            to = GameController.gameController.GetGrid().GetCellCenterWorld(path[path.Count - 1]);
             path.RemoveAt(path.Count - 1);
         }
         else
         {
-            Debug.Log($"Moving towards {to}");
+            // Debug.Log($"Moving towards {to}");
             this.transform.position = Vector3.MoveTowards(this.transform.position, to, Time.deltaTime * speed);
         }
     }
     
+    void OnDestroy()
+    {
+        GameController.gameController.OnEnemyDie();
+    }
+
     void AttackTarget()
     {
         /* TODO */    
@@ -62,13 +60,17 @@ public class EnemyMovement : MonoBehaviour
     /* TOOD:" Check if cell is valid to walk into */
     bool IsValid(Vector3Int cell)
     {
-        return true;
+        return (
+            (-1 * GameController.X_LIM <= cell.x && cell.x <= GameController.X_LIM) && 
+            (-1 * GameController.Y_LIM <= cell.y && cell.y <= GameController.Y_LIM) && 
+            !GameController.gameController.GetTilemap().HasTile(cell)
+        );
     }
 
     List<Vector3Int> GetPath (GameObject target)
     {
-        Vector3Int curPos = grid.WorldToCell(this.transform.position);
-        Vector3Int targetPos = grid.WorldToCell(target.transform.position);
+        Vector3Int curPos = GameController.gameController.GetGrid().WorldToCell(this.transform.position);
+        Vector3Int targetPos = GameController.gameController.GetGrid().WorldToCell(target.transform.position);
 
         Vector3Int cur = curPos;
         Vector3Int next = curPos;
@@ -82,7 +84,7 @@ public class EnemyMovement : MonoBehaviour
         while (queue.Count != 0)
         {
             // Safety catch in case I implemented something wrong
-            if (depth == 1000000) { Debug.LogError("Something went wrong during search..."); return null; }
+            if (depth == 100000000) { Debug.LogError("Something probably went wrong during search..."); return null; }
 
             cur = queue.Dequeue();
             seen.Add(cur);
@@ -98,6 +100,7 @@ public class EnemyMovement : MonoBehaviour
                         cur = parents[cur];
                     }
                     path.RemoveAt(path.Count - 1);
+                    Debug.Log(depth);
                     return path;
                 }
                 else if (IsValid(next) && !seen.Contains(next))
