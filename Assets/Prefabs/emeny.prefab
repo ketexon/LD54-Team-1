@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5201998808171041573}
   - component: {fileID: 3437432481839778070}
+  - component: {fileID: 7063262199975878497}
   - component: {fileID: 158018255367937244}
   m_Layer: 0
   m_Name: emeny
@@ -74,8 +75,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 982f46b2a7d3df94689c4a95ad9fdf59, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -85,6 +86,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7063262199975878497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2389368801119502656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0bdbc8e5e5219d41b3a2a6b9c8f5536, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &158018255367937244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,7 +110,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81cba6f1c02164643835818dcdc800ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targets:
-  - {fileID: 0}
   speed: 5
-  grid: {fileID: 0}

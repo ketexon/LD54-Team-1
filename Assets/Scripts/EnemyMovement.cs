@@ -9,8 +9,6 @@ public class EnemyMovement : MonoBehaviour
         Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right
     };
 
-    // Targets is temp so we can test pathfinding, we will have to dynamically update the targets in a gamecontroller
-    [SerializeField] private List<GameObject> targets;
     [SerializeField] private float speed=5f;
 
     private List<Vector3Int> path;
@@ -46,18 +44,12 @@ public class EnemyMovement : MonoBehaviour
             this.transform.position = Vector3.MoveTowards(this.transform.position, to, Time.deltaTime * speed);
         }
     }
-    
-    void OnDestroy()
-    {
-        GameController.gameController.OnEnemyDie();
-    }
 
     void AttackTarget()
     {
         /* TODO */    
     }
 
-    /* TOOD:" Check if cell is valid to walk into */
     bool IsValid(Vector3Int cell)
     {
         return (
