@@ -13,6 +13,7 @@ public class InputReader : ScriptableObject, Controls.IGameplayActions
     public System.Action<Vector2> MouseMoveEvent;
     public System.Action<float> ScrollEvent;
     public System.Action<bool> MMBEvent;
+    public System.Action<bool> SpawnWaveEvent;
 
     void OnEnable()
     {
@@ -52,5 +53,10 @@ public class InputReader : ScriptableObject, Controls.IGameplayActions
     {
         // divide by 120 b/c one tick of scroll is 120f
         ScrollEvent?.Invoke(context.ReadValue<float>() / 120f);
+    }
+
+    public void OnSpawnWave(InputAction.CallbackContext context)
+    {
+        SpawnWaveEvent?.Invoke(context.ReadValue<bool>());
     }
 }

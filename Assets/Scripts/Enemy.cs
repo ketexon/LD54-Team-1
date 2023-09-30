@@ -34,7 +34,11 @@ public class Enemy : MonoBehaviour, IHealthEntity
 
     public void Die()
     {
-        GameController.gameController.OnEnemyDie();
         Destroy(this.gameObject);
+    }
+
+    void OnDestroy()
+    {
+        GameController.gameController.OnEnemyDie();
     }
 }

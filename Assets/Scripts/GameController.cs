@@ -5,6 +5,11 @@ using UnityEngine.Tilemaps;
 
 public class GameController : MonoBehaviour
 {
+    private enum GameState
+    {
+        Defending, Farming
+    }
+
     public static GameController gameController { get; private set; }
 
     public static int X_BOUND = 13;
@@ -18,10 +23,11 @@ public class GameController : MonoBehaviour
     [SerializeField] private List<GameObject> towers;
     [SerializeField] private Grid grid;
     [SerializeField] private Tilemap tilemap;
-    // private List<GameObject> enemies;
     
     private int numEnemies;
     private int wave;
+    private GameState gameState;
+    private List<Vector3Int> spawnPoints = new List<Vector3Int>();
 
     void Awake()
     {
@@ -34,46 +40,54 @@ public class GameController : MonoBehaviour
             gameController = this;
         }
 
+        for (int x = -X_LIM+1; x < X_LIM; x++)
+        {
+            for (int y = -Y_LIM+1; y < Y_LIM; y++)
+            {
+                if (
+                    (-1 * X_BOUND <= x && x <= X_BOUND) && 
+                    (-1 * Y_BOUND <= y && y <= Y_BOUND)
+                ) continue;
+                spawnPoints.Add(new Vector3Int(x, y, 0));
+            }
+        }
         wave = 0;
         numEnemies = 0;
+        gameState = GameState.Farming;
     }
+
+    // void Start()
+    // {
+        
+    // }
     
-    void Update()
+    // void Update()
+    // {
+    // }
+
+    public void StartNextWave()
     {
-        if (numEnemies == 0)
+        if (gameState == GameState.Farming)
         {
-            StartNextWave();
+            Vector3 pos;
+            wave++;
+            for(int i = 0; i < Mathf.Pow(wave, 2); i++)
+            {
+                pos = GetRandomSpawnPoint();
+                GameObject.Instantiate(enemyPrefab, pos, Quaternion.identity);
+                numEnemies++;
+            }
         }
     }
 
-    void StartNextWave()
+    Vector3Int GetRandomSpawnPoint()
     {
-        this.transform.position = grid.GetCellCenterWorld(new Vector3Int(
-                -X_BOUND,
-                Y_BOUND,
-                0
-            ));
-        Vector3 pos;
-        wave++;
-        for(int i = 0; i < Mathf.Pow(wave, 2); i++)
-        {
-            int newX = Random.Range(0, SOME_RANDOM_OFFSET * 2) + X_BOUND;
-            int newY = Random.Range(0, SOME_RANDOM_OFFSET * 2) + Y_BOUND;
-            if (newX > X_LIM) newX = -X_BOUND - (newX - X_LIM);
-            if (newY > Y_LIM) newY = -Y_BOUND - (newY - Y_LIM);
-            Vector3Int temp = new Vector3Int(newX, newY, 0);
-            pos = grid.GetCellCenterWorld(temp);
-            Debug.Log($"Spawning at {temp}");
-            GameObject.Instantiate(enemyPrefab, pos, Quaternion.identity);
-            numEnemies++;
-        }
+        return spawnPoints[Random.Range(0, spawnPoints.Count)];
     }
 
-    public void OnEnemyDie()
-    {
-        numEnemies--;
-    }
+    public void OnEnemyDie() { numEnemies--; }
 
+    /* Getters */
     public List<GameObject> GetTowers() { return towers; }
     public Grid GetGrid() { return grid; }
     public Tilemap GetTilemap() { return tilemap; }
