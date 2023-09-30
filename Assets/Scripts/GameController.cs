@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     public static int X_LIM = X_BOUND + SOME_RANDOM_OFFSET;
     public static int Y_LIM = Y_BOUND + SOME_RANDOM_OFFSET;
 
+    [SerializeField] InputReader inputReader;
     [SerializeField] private GameObject enemyPrefab;
     
     [SerializeField] private List<GameObject> towers;
@@ -58,9 +59,19 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        StartNextWave();   
+        StartNextWave();
     }
-    
+
+    void OnEnable()
+    {
+        inputReader.SpawnWaveEvent += StartNextWave;
+    }
+
+    void OnDisable()
+    {
+        inputReader.SpawnWaveEvent -= StartNextWave;
+    }
+
     void Update()
     {
 

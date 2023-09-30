@@ -13,7 +13,7 @@ public class InputReader : ScriptableObject, Controls.IGameplayActions
     public System.Action<Vector2> MouseMoveEvent;
     public System.Action<float> ScrollEvent;
     public System.Action<bool> MMBEvent;
-    public System.Action<bool> SpawnWaveEvent;
+    public System.Action SpawnWaveEvent;
 
     void OnEnable()
     {
@@ -57,6 +57,8 @@ public class InputReader : ScriptableObject, Controls.IGameplayActions
 
     public void OnSpawnWave(InputAction.CallbackContext context)
     {
-        SpawnWaveEvent?.Invoke(context.ReadValue<bool>());
+        if (context.performed) { 
+            SpawnWaveEvent?.Invoke();
+        }
     }
 }
