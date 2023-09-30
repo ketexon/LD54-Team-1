@@ -70,24 +70,19 @@ public class EnemyMovement : MonoBehaviour
     List<Vector3Int> GetPath (GameObject target)
     {
         Vector3Int curPos = GameController.gameController.GetGrid().WorldToCell(this.transform.position);
-        Vector3Int targetPos = GameController.gameController.GetGrid().WorldToCell(target.transform.position);
+        Vector3Int targetPos = GameController.gameController.GetGrid().WorldToCell(GetClosestTarget(GameController.gameController.GetTowers()).transform.position);
 
         Vector3Int cur = curPos;
         Vector3Int next = curPos;
-        HashSet<Vector3Int> seen = new HashSet<Vector3Int>();
+
+        bool[,] seen = new bool[GameController.X_LIM * 2 + 1, GameController.Y_LIM * 2 + 1]; 
         Dictionary<Vector3Int, Vector3Int> parents = new Dictionary<Vector3Int, Vector3Int>();
         Queue<Vector3Int> queue = new Queue<Vector3Int>();
         queue.Enqueue(curPos);
-        seen.Add(cur);
 
-        int depth = 0;
         while (queue.Count != 0)
         {
-            // Safety catch in case I implemented something wrong
-            if (depth == 100000000) { Debug.LogError("Something probably went wrong during search..."); return null; }
-
             cur = queue.Dequeue();
-            seen.Add(cur);
             foreach(var dir in directions)
             {
                 next = cur + dir;
@@ -100,19 +95,18 @@ public class EnemyMovement : MonoBehaviour
                         cur = parents[cur];
                     }
                     path.RemoveAt(path.Count - 1);
-                    Debug.Log(depth);
+                    queue.Clear();
                     return path;
                 }
-                else if (IsValid(next) && !seen.Contains(next))
+                else if (IsValid(next) && !seen[next.x + GameController.X_LIM, next.y + GameController.Y_LIM])
                 {
                     queue.Enqueue(next);
                     parents[next] = cur;
+                    seen[next.x + GameController.X_LIM, next.y + GameController.Y_LIM] = true;
                 }
             }
-
-            depth++;
         }
-        return null;        
+        return null;
     }
 
     GameObject GetClosestTarget(List<GameObject> targets)

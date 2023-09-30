@@ -7,15 +7,14 @@ public class GameController : MonoBehaviour
 {
     public static GameController gameController { get; private set; }
 
-    public static float X_BOUND = 13;
-    public static float Y_BOUND = 7;
-    public static float SOME_RANDOM_OFFSET = 5;
-    public static float X_LIM = X_BOUND + SOME_RANDOM_OFFSET;
-    public static float Y_LIM = Y_BOUND + SOME_RANDOM_OFFSET;
+    public static int X_BOUND = 13;
+    public static int Y_BOUND = 7;
+    public static int SOME_RANDOM_OFFSET = 5;
+    public static int X_LIM = X_BOUND + SOME_RANDOM_OFFSET;
+    public static int Y_LIM = Y_BOUND + SOME_RANDOM_OFFSET;
 
     [SerializeField] private GameObject enemyPrefab;
     
-
     [SerializeField] private List<GameObject> towers;
     [SerializeField] private Grid grid;
     [SerializeField] private Tilemap tilemap;
@@ -49,21 +48,24 @@ public class GameController : MonoBehaviour
 
     void StartNextWave()
     {
+        this.transform.position = grid.GetCellCenterWorld(new Vector3Int(
+                -X_BOUND,
+                Y_BOUND,
+                0
+            ));
         Vector3 pos;
         wave++;
         for(int i = 0; i < Mathf.Pow(wave, 2); i++)
         {
-            numEnemies++;
-            pos = 
-            grid.GetCellCenterWorld(
-            grid.WorldToCell(new Vector3(
-                Random.Range(X_BOUND, X_LIM) * (Random.Range(0, 2) == 1 ? 1 : -1),
-                Random.Range(Y_BOUND, Y_LIM) * (Random.Range(0, 2) == 1 ? 1 : -1),
-                0f
-            )));
-            Debug.Log($"Spawning at {pos}");
+            int newX = Random.Range(0, SOME_RANDOM_OFFSET * 2) + X_BOUND;
+            int newY = Random.Range(0, SOME_RANDOM_OFFSET * 2) + Y_BOUND;
+            if (newX > X_LIM) newX = -X_BOUND - (newX - X_LIM);
+            if (newY > Y_LIM) newY = -Y_BOUND - (newY - Y_LIM);
+            Vector3Int temp = new Vector3Int(newX, newY, 0);
+            pos = grid.GetCellCenterWorld(temp);
+            Debug.Log($"Spawning at {temp}");
             GameObject.Instantiate(enemyPrefab, pos, Quaternion.identity);
-            this.transform.position = pos;
+            numEnemies++;
         }
     }
 
