@@ -44,4 +44,17 @@ public class Tower : Placeable
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, Range);
     }
+
+    public override bool ValidatePlace(Vector3Int loc)
+    {
+        return metalCost <= ResourceManager.Instance.Metal && 
+               energyCost <= ResourceManager.Instance.Energy &&
+               GameController.gameController.HasFertileLand(loc);
+    }
+
+    public override void UpdateResources()
+    {
+        ResourceManager.Instance.Metal -= metalCost;
+        ResourceManager.Instance.Energy -= energyCost;
+    }
 }

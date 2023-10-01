@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Base class for all objects that can be placed on the grid
-public class Placeable : MonoBehaviour, IHealthEntity
+public abstract class Placeable : MonoBehaviour, IHealthEntity
 {
     [SerializeField] float maxHealth = 100f;
     [SerializeField] GameObject textIndicatorPrefab;
 
     float health;
+
+    [SerializeField] protected int metalCost;
+    [SerializeField] protected int energyCost;
 
     public GridCell Cell { get; private set; } = null;
 
@@ -42,4 +45,20 @@ public class Placeable : MonoBehaviour, IHealthEntity
     public float GetHealth() => health;
 
     public void Heal(float amount) => health = Mathf.Min(health + amount, maxHealth);
+
+    public bool TryPlace(Vector3Int loc)
+    {
+        if (ValidatePlace(loc))
+        {
+            UpdateResources();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public abstract bool ValidatePlace(Vector3Int loc);
+    public abstract void UpdateResources();
 }

@@ -62,11 +62,6 @@ public class GameController : MonoBehaviour
         gameState = GameState.Farming;
     }
 
-    void Start()
-    {
-        StartNextWave();
-    }
-
     void Update()
     {
         string plantStr = "";
@@ -94,6 +89,11 @@ public class GameController : MonoBehaviour
         placeables.Remove(placeable);
     }
 
+    public bool HasFertileLand(Vector3Int loc)
+    {
+        return true;
+    }
+    
     void StartFarming()
     {
         if (gameState == GameState.Defending)
