@@ -22,11 +22,20 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     
     [SerializeField] private List<GameObject> towers;
-    [SerializeField] private List<Placeable> placeables;
     [SerializeField] private Grid grid;
     [SerializeField] private Tilemap tilemap;
 
+    public System.Action WaveEndEvent;
+
+    List<Placeable> placeables = new();
+    
     public IReadOnlyList<Placeable> Placeables => placeables;
+
+    List<PlantBuff> plantBuffs = new();
+    public IReadOnlyList<PlantBuff> PlantBuffs => plantBuffs;
+
+    public PlantBuff NetPlantBuff { get; private set; } = new();
+
 
     private int numEnemies;
     private int wave;
@@ -80,9 +89,25 @@ public class GameController : MonoBehaviour
 
     }
 
+    public void AddPlaceable(Placeable placeable)
+    {
+        placeables.Add(placeable);
+
+        if(placeable is Plant plant)
+        {
+            plantBuffs.Add(plant.Stats.Buff);
+            NetPlantBuff += plant.Stats.Buff;
+        }
+    }
+
     public void OnPlaceableDie(Placeable placeable)
     {
         placeables.Remove(placeable);
+        if(placeable is Plant plant)
+        {
+            plantBuffs.Remove(plant.Stats.Buff);
+            NetPlantBuff += -plant.Stats.Buff;
+        }
     }
 
     public void OnEnemyDie()
@@ -90,7 +115,7 @@ public class GameController : MonoBehaviour
         numEnemies--;
         if (numEnemies == 0)
         {
-            gameState = GameState.Farming;
+            EndWave();
         }
     }
 
@@ -121,6 +146,13 @@ public class GameController : MonoBehaviour
     {
         return spawnPoints[Random.Range(0, spawnPoints.Count)];
     }
+
+    void EndWave()
+    {
+        WaveEndEvent?.Invoke();
+        gameState = GameState.Farming;
+    }
+
 
     /* Getters */
     public List<GameObject> GetTowers() { return towers; }

@@ -29,7 +29,11 @@ public class OrbTower : Tower
             var go = Instantiate(shotPrefab, transform.position, Quaternion.Euler(0, 0, theta * 180 / Mathf.PI));
             var shot = go.GetComponent<Shot>();
             shot.Initialize(shotParams);
-            shotReadyTime = Time.time + shotInterval;
+
+            var buff = GameController.gameController.NetPlantBuff;
+            shotParams += buff.DeltaShotParams;
+
+            shotReadyTime = Time.time + shotInterval * buff.ShotIntervalMult;
         }
     }
 }

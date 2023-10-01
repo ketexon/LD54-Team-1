@@ -12,14 +12,24 @@ public class TextIndicator : MonoBehaviour
 
     Animator animator;
 
+    bool dontDestroy = false;
+
     void Reset()
     {
         text = GetComponentInChildren<TMP_Text>();
     }
 
+    public void DebugDontDestroy()
+    {
+        dontDestroy = true;
+    }
+
     // Used by AnimationController
     void DropAnimationFinishEvent()
     {
-        Destroy(gameObject);
+        if (!dontDestroy)
+        {
+            Destroy(gameObject);
+        }
     }
 }

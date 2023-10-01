@@ -10,7 +10,15 @@ public struct ShotParams
     public int PeirceCap;
     public float Range;
 
+    public static ShotParams operator+(ShotParams left, ShotParams right) => new(){
+        Damage = left.Damage + right.Damage,
+        Speed = left.Speed + right.Speed,
+        PeirceCap = left.PeirceCap + right.PeirceCap,
+        Range = left.Range + right.Range
+    };
+
     public static ShotParams Default => new() { Damage = 50, Speed = 5, PeirceCap = 1, Range = 10 };
+    public static ShotParams Zero => new() { Damage = 0, Speed = 0, PeirceCap = 0, Range = 0 };
 }
 
 [RequireComponent(typeof(Rigidbody2D))]

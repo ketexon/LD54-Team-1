@@ -9,12 +9,12 @@ public class DropSO : ScriptableObject
     public PlantSO Seed;
     public int Energy;
 
-    public string IndicatorText(int metalSpriteIndex, int energySpriteIndex)
+    public string IndicatorText(DropSettingsSO settings)
     {
         string text = "";
         if (Metal > 0)
         {
-            text += $"+{Metal}<sprite index=\"{metalSpriteIndex}\">";
+            text += $"+{Metal}<sprite index=\"{settings.MetalSpriteIndex}\">";
         }
         if (Seed is PlantSO plant)
         {
@@ -24,7 +24,7 @@ public class DropSO : ScriptableObject
         if (Energy > 0)
         {
             text += text.Length > 0 ? "\n" : "";
-            text += $"+{Energy}<sprite index=\"{energySpriteIndex}\">";
+            text += $"<color=\"blue\">+{Energy}</color><sprite index=\"{settings.EnergySpriteIndex}\">";
         }
         return text;
     }
