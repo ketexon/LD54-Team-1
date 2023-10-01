@@ -47,4 +47,5 @@ public class PlantSO : ScriptableObject
     public PlantBuff Buff;
     public int HarvestCycleLength;
     public DropSO HarvestDrop;
+    public GameObject Prefab;
 }

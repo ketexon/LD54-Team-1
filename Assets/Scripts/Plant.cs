@@ -13,6 +13,8 @@ public class Plant : Placeable
     {
         base.Awake();
         wavesUntilHarvest = Stats.HarvestCycleLength;
+
+        Instantiate(Stats.Prefab, transform.position, Quaternion.identity, transform);
     }
 
     override protected void Start()

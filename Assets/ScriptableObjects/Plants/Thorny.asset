@@ -21,3 +21,6 @@ MonoBehaviour:
       Speed: 0
       PeirceCap: 1
       Range: 0
+  HarvestCycleLength: 0
+  HarvestDrop: {fileID: 0}
+  Prefab: {fileID: 1463023482617577174, guid: b436203f3ec47a84eaecb460c91a3e9a, type: 3}
