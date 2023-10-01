@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class GameController : MonoBehaviour
 
     public IReadOnlyList<Placeable> Placeables => placeables;
 
-    [SerializeField] private GameObject  farmUI;
+    [SerializeField] private GameObject farmUI;
     
     private int numEnemies;
     private int wave;
@@ -64,6 +65,18 @@ public class GameController : MonoBehaviour
     void Start()
     {
         StartNextWave();
+    }
+
+    void Update()
+    {
+        string plantStr = "";
+        foreach(var plant in ResourceManager.Instance.Seeds)
+        {
+            plantStr += "{plant.key.name}: {plant.value}\n";
+        }
+
+        farmUI.transform.Find("Resources").GetComponent<TMP_Text>().text = 
+            $"Metal: {ResourceManager.Instance.Metal}\nEnergy: {ResourceManager.Instance.Energy}";
     }
 
     void OnEnable()
