@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Status: 1
-  Placeable: {fileID: 0}
+  Placeable: {fileID: 1648591732}
 --- !u!1 &104576892
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,7 +428,7 @@ Transform:
   m_GameObject: {fileID: 1111350949}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -651,6 +651,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 467f38e6b5270db4eb5ea1438a0ee828, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 100
+  textIndicatorPrefab: {fileID: 3276284391420294907, guid: 5c3989b927e82dd4ab09f4ba2e0eab06, type: 3}
   Range: 5
   enemyLayerMask:
     serializedVersion: 2
@@ -737,8 +739,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1583978037}
-  - {fileID: 104576893}
   - {fileID: 1757103596}
+  - {fileID: 104576893}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1884861131

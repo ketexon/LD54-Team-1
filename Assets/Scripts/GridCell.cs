@@ -15,14 +15,12 @@ public class GridCell : MonoBehaviour
     [SerializeField] public GridCellStatus Status;
     [SerializeField] public Placeable Placeable;
 
-    Placeable placeable;
-
     void Awake()
     {
         // If we start with a placeable, attach it to this cell
-        if(placeable != null)
+        if(Placeable != null)
         {
-            placeable.AttachToCell(this);
+            Placeable.AttachToCell(this);
         }
     }
 

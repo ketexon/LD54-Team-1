@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour
                 spawnPoints.Add(new Vector3Int(x, y, 0));
             }
         }
-        wave = 5;
+        wave = 2;
         numEnemies = 0;
         gameState = GameState.Farming;
     }
