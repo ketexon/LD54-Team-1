@@ -21,7 +21,6 @@ public class GameController : MonoBehaviour
     [SerializeField] InputReader inputReader;
     [SerializeField] private GameObject enemyPrefab;
     
-    [SerializeField] private List<GameObject> towers;
     [SerializeField] private List<Placeable> placeables;
     [SerializeField] private Grid grid;
     [SerializeField] private Tilemap tilemap;
@@ -77,20 +76,13 @@ public class GameController : MonoBehaviour
         inputReader.SpawnWaveEvent -= StartNextWave;
     }
 
-    void StartFarming()
-    {
-
-    }
-
     public void OnPlaceableDie(Placeable placeable)
     {
         placeables.Remove(placeable);
     }
 
-    public void OnEnemyDie()
+    void StartFarming()
     {
-        numEnemies--;
-        if (numEnemies == 0)
         if (gameState == GameState.Defending)
         {
             gameState = GameState.Farming;
@@ -137,7 +129,6 @@ public class GameController : MonoBehaviour
     }
 
     /* Getters */
-    public List<GameObject> GetTowers() { return towers; }
     public Grid GetGrid() { return grid; }
     public Tilemap GetTilemap() { return tilemap; }
 }
