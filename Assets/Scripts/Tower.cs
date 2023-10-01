@@ -47,7 +47,8 @@ public class Tower : Placeable
 
     public override void Die()
     {
-
+        GameController.gameController.OnPlaceableDie(this);
+        GameController.gameController.RemoveBuilding(this.transform.position);
     }
 
     public override bool ValidatePlace(Vector3Int loc)

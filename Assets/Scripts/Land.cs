@@ -22,8 +22,8 @@ public class Land : Placeable, IPointerDownHandler
 
     public override void Die()
     {
-        GameController.gameController.RemoveLandTile(this.transform.position);
-        // Destroy(gameObject);
+        GameController.gameController.OnPlaceableDie(this);
+        GameController.gameController.RemoveLand(this.transform.position);
     }
 
     public override bool ValidatePlace(Vector3Int loc)

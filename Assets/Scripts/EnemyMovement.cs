@@ -155,6 +155,10 @@ public class EnemyMovement : MonoBehaviour
                 closest = target;
             }
         }
-        return closest;
+
+        return GameController.gameController.GetTargetForEnemy(
+                GameController.gameController.GetGrid().WorldToCell(
+                    closest.transform.position
+        ));
     }
 }

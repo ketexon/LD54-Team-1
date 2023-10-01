@@ -31,8 +31,7 @@ public abstract class Placeable : MonoBehaviour, IHealthEntity
         var indicatorGO = Instantiate(textIndicatorPrefab, transform.position, Quaternion.identity);
         var indicator = indicatorGO.GetComponent<TextIndicator>();
         indicator.Text = $"<color=\"red\">-{amount}</color>";
-
-        if (health < 0) Die();
+        if (health <= 0) Die();
     }
 
     public abstract void Die();

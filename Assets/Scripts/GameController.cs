@@ -116,9 +116,30 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public bool HasFertileLand(Vector3Int loc)
+    {
+        return landTilemap.HasTile(loc) &&
+                landTilemap.GetInstantiatedObject(loc).GetComponent<Land>().GetStatus() == Land.LandStatus.Fertile;
+    }
+    
+    public bool HasLand(Vector3Int loc)
+    {
+        return landTilemap.HasTile(loc);
+    }
+    
     public void SetLand(Vector3Int loc, Tile tile)
     {
         landTilemap.SetTile(loc, tile);
+    }
+
+    public void RemoveLand(Vector3 loc)
+    {
+        SetLand(grid.WorldToCell(loc), null);
+    }
+
+    public bool HasBuilding(Vector3Int loc)
+    {
+        return otherTilemap.HasTile(loc);
     }
 
     public void SetBuilding(Vector3Int loc, Tile tile)
@@ -126,20 +147,16 @@ public class GameController : MonoBehaviour
         otherTilemap.SetTile(loc, tile);
     }
 
-    public bool HasFertileLand(Vector3Int loc)
+    public void RemoveBuilding(Vector3 loc)
     {
-        return landTilemap.HasTile(loc) &&
-                landTilemap.GetInstantiatedObject(loc).GetComponent<Land>().GetStatus() == Land.LandStatus.Fertile;
-    }
-    
-    public bool HasBuilding(Vector3Int loc)
-    {
-        return otherTilemap.HasTile(loc);
+        SetBuilding(grid.WorldToCell(loc), null);
     }
 
-    public bool HasLand(Vector3Int loc)
+    public Placeable GetTargetForEnemy(Vector3Int loc)
     {
-        return landTilemap.HasTile(loc);
+        return otherTilemap.HasTile(loc) ?
+                otherTilemap.GetInstantiatedObject(loc).GetComponent<Placeable>() :
+                landTilemap.GetInstantiatedObject(loc).GetComponent<Placeable>();
     }
     
     void StartFarming()
@@ -160,11 +177,6 @@ public class GameController : MonoBehaviour
             farmUI.SetActive(false);
             StartCoroutine(SpawnEnemies());
         }
-    }
-
-    public void RemoveLandTile(Vector3 loc)
-    {
-        landTilemap.SetTile(grid.WorldToCell(loc), null);
     }
 
     IEnumerator SpawnEnemies()
