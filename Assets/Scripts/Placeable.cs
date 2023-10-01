@@ -45,6 +45,10 @@ public abstract class Placeable : MonoBehaviour, IHealthEntity
             UpdateResources();
             Place(loc, placeable);
         }
+        else
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     public abstract bool ValidatePlace(Vector3Int loc);

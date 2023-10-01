@@ -147,6 +147,7 @@ public class EnemyMovement : MonoBehaviour
         foreach (var target in targets)
         {
             if (target == null) continue;
+            Debug.Log(target.gameObject.name);
             newDistance = Vector3.Distance(this.transform.position, target.transform.position);
             if (newDistance < distance)
             {

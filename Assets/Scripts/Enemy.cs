@@ -7,6 +7,8 @@ public class Enemy : MonoBehaviour, IHealthEntity
     [SerializeField] DropSettingsSO dropSettings;
     [SerializeField] GameObject textIndicatorPrefab;
 
+    [SerializeField] private Sprite ded;
+
     protected static float MAX_HEALTH = 100f;
     
     private float health;
@@ -43,12 +45,17 @@ public class Enemy : MonoBehaviour, IHealthEntity
     public void Die()
     {
         SpawnDrop();
-        Destroy(this.gameObject);
+        GameController.gameController.OnEnemyDie();
+        Destroy(this.gameObject.GetComponent<BoxCollider2D>());
+        Destroy(this.gameObject.GetComponent<EnemyMovement>());
+        this.transform.GetChild(0).gameObject.GetComponent<Animator>().SetBool("dead", true);
+        StartCoroutine(DestroyDelayed());
     }
 
-    void OnDestroy()
+    IEnumerator DestroyDelayed()
     {
-        GameController.gameController.OnEnemyDie();
+        yield return new WaitForSeconds(1.78f);
+        Destroy(this.gameObject);
     }
 
     void SpawnDrop()

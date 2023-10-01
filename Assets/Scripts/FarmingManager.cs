@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
 
 public class FarmingManager : MonoBehaviour
@@ -9,6 +10,7 @@ public class FarmingManager : MonoBehaviour
     [SerializeField] private InputReader inputReader;
     [SerializeField] private Grid grid;
     [SerializeField] private PlaceableSO initialSelection;
+    [SerializeField] private GameObject emptyObject;
 
     private PlaceableSO currentSelectionSO;
     private GameObject currentSelection;
@@ -17,12 +19,11 @@ public class FarmingManager : MonoBehaviour
     void Start()
     {
         gr = this.GetComponent<GraphicRaycaster>();
-        currentSelectionSO = initialSelection;
-        currentSelection = GameObject.Instantiate(initialSelection.gameObject);
     }
 
     void OnEnable()
     {
+        if (currentSelection == null) SetSelection(currentSelectionSO);
         inputReader.PointEvent += SnapCurrentSelectionToGrid;
         inputReader.ClickEvent += PlaceCurrentSelection;
     }
@@ -36,29 +37,41 @@ public class FarmingManager : MonoBehaviour
 
     void SnapCurrentSelectionToGrid(Vector2 loc)
     {
-        Vector3Int cellLoc = grid.WorldToCell(Camera.main.ScreenToWorldPoint(loc));
-
-        currentSelection.transform.position = grid.GetCellCenterWorld(cellLoc);
+        if (currentSelection != null)
+        {
+            currentSelection.transform.position =
+                grid.GetCellCenterWorld(
+                    grid.WorldToCell(Camera.main.ScreenToWorldPoint(loc))
+                    );
+        }
     }
 
     void PlaceCurrentSelection(bool place)
     {
         if (place && CanPlace())
         {
-            currentSelection.GetComponent<Placeable>()
+            GameObject temp = GameObject.Instantiate(currentSelectionSO.gameObject);
+            try {
+                temp.GetComponent<Placeable>()
                             .TryPlace(
                                 grid.WorldToCell(currentSelection.transform.position),
                                 currentSelectionSO
                             );
+            } catch (System.Exception e) {
+                Debug.LogError(e);
+            } finally {
+                Destroy(temp);
+            }
         }
     }
     
     public void SetSelection(PlaceableSO selection)
     {
-        Destroy(currentSelection);
+        if (selection == null) selection = initialSelection;
+        if (currentSelection != null) Destroy(currentSelection);
         currentSelectionSO = selection;
-        currentSelection = GameObject.Instantiate(selection.gameObject);
-        currentSelection.name = "cell temp";
+        currentSelection = GameObject.Instantiate(emptyObject);
+        currentSelection.GetComponent<SpriteRenderer>().sprite = selection.sprite;
         currentSelection.transform.position = grid.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
 
