@@ -74,7 +74,6 @@ public class EnemyMovement : MonoBehaviour
             return;
         }
 
-        Debug.Log("ATTACK");
         if(Time.time > nextAttackTime)
         {
             target.Damage(stats.Damage);

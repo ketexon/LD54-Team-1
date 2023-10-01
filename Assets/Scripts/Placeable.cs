@@ -6,6 +6,7 @@ using UnityEngine;
 public class Placeable : MonoBehaviour, IHealthEntity
 {
     [SerializeField] float maxHealth = 100f;
+    [SerializeField] GameObject textIndicatorPrefab;
 
     float health;
 
@@ -22,7 +23,13 @@ public class Placeable : MonoBehaviour, IHealthEntity
     }
 
     public void Damage(float amount) {
+        Debug.Log(health);
         health -= amount;
+        var indicatorGO = Instantiate(textIndicatorPrefab, transform.position, Quaternion.identity);
+        var indicator = indicatorGO.GetComponent<TextIndicator>();
+        indicator.Text = $"<color=\"red\">-{amount}</color>";
+        Debug.Log(indicatorGO);
+
         if (health < 0) Die();
     }
 

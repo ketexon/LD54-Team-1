@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, IHealthEntity
 {
     [SerializeField] DropSettingsSO dropSettings;
-    [SerializeField] GameObject dropIndicatorPrefab;
+    [SerializeField] GameObject textIndicatorPrefab;
 
     protected static float MAX_HEALTH = 100f;
     
@@ -24,6 +24,11 @@ public class Enemy : MonoBehaviour, IHealthEntity
     public void Damage(float amount)
     {
         health -= amount;
+
+        var indicatorGo = Instantiate(textIndicatorPrefab, transform.position, Quaternion.identity);
+        var indicator = indicatorGo.GetComponent<TextIndicator>();
+        indicator.Text = $"<color=\"red\">-{amount}</color>";
+
         if (health < 0)
         {
             Die();
@@ -51,7 +56,7 @@ public class Enemy : MonoBehaviour, IHealthEntity
         DropSO drop = dropSettings.GetRandomDrop();
         if (drop != null)
         {
-            var indicatorGo = Instantiate(dropIndicatorPrefab, transform.position, Quaternion.identity);
+            var indicatorGo = Instantiate(textIndicatorPrefab, transform.position, Quaternion.identity);
             var indicator = indicatorGo.GetComponent<TextIndicator>();
             indicator.Text = drop.IndicatorText(dropSettings.MetalSpriteIndex, dropSettings.EnergySpriteIndex);
             ResourceManager.Instance.AddDrop(drop);
