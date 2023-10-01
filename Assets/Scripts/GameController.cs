@@ -7,7 +7,7 @@ public class GameController : MonoBehaviour
 {
     private enum GameState
     {
-        Defending, Farming
+        Defending, Farming, EnemiesSpawning
     }
 
     public static GameController gameController { get; private set; }
@@ -28,6 +28,8 @@ public class GameController : MonoBehaviour
 
     public IReadOnlyList<Placeable> Placeables => placeables;
 
+    [SerializeField] private GameObject  farmUI;
+    
     private int numEnemies;
     private int wave;
     private GameState gameState;
@@ -55,7 +57,7 @@ public class GameController : MonoBehaviour
                 spawnPoints.Add(new Vector3Int(x, y, 0));
             }
         }
-        wave = 5;
+        wave = 0;
         numEnemies = 0;
         gameState = GameState.Farming;
     }
@@ -75,7 +77,7 @@ public class GameController : MonoBehaviour
         inputReader.SpawnWaveEvent -= StartNextWave;
     }
 
-    void Update()
+    void StartFarming()
     {
 
     }
@@ -89,37 +91,49 @@ public class GameController : MonoBehaviour
     {
         numEnemies--;
         if (numEnemies == 0)
+        if (gameState == GameState.Defending)
         {
             gameState = GameState.Farming;
+            farmUI.SetActive(true);
         }
     }
 
     public void StartNextWave()
     {
-        StartCoroutine(SpawnEnemies());
+        if (gameState == GameState.Farming)
+        {
+            gameState = GameState.EnemiesSpawning;
+            farmUI.SetActive(false);
+            StartCoroutine(SpawnEnemies());
+        }
     }
 
     IEnumerator SpawnEnemies()
     {
-        if (gameState == GameState.Farming)
+        Vector3 pos;
+        wave++;
+        for(int i = 0; i < Mathf.Pow(wave, 2); i++)
         {
-            Vector3 pos;
-            wave++;
-            for(int i = 0; i < Mathf.Pow(wave, 2); i++)
-            {
-                pos = GetRandomSpawnPoint();
-                GameObject.Instantiate(enemyPrefab, pos, Quaternion.identity);
-                numEnemies++;
-                yield return new WaitForSeconds(.59f);
-            }
-            gameState = GameState.Defending;
+            pos = GetRandomSpawnPoint();
+            GameObject.Instantiate(enemyPrefab, pos, Quaternion.identity);
+            numEnemies++;
+            yield return new WaitForSeconds(.59f);
         }
-        yield return null;
+        gameState = GameState.Defending;
     }
 
     Vector3Int GetRandomSpawnPoint()
     {
         return spawnPoints[Random.Range(0, spawnPoints.Count)];
+    }
+
+    public void OnEnemyDie()
+    {
+        numEnemies--;
+        if (numEnemies == 0)
+        {
+            StartFarming();
+        }
     }
 
     /* Getters */
