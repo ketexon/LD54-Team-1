@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
     private enum GameState
     {
-        Defending, Farming
+        Defending, Farming, EnemiesSpawning
     }
 
     public static GameController gameController { get; private set; }
@@ -21,7 +22,6 @@ public class GameController : MonoBehaviour
     [SerializeField] InputReader inputReader;
     [SerializeField] private GameObject enemyPrefab;
     
-    [SerializeField] private List<GameObject> towers;
     [SerializeField] private Grid grid;
     [SerializeField] private Tilemap tilemap;
 
@@ -37,6 +37,8 @@ public class GameController : MonoBehaviour
     public PlantBuff NetPlantBuff { get; private set; } = new();
 
 
+    [SerializeField] private GameObject farmUI;
+    
     private int numEnemies;
     private int wave;
     private GameState gameState;
@@ -64,7 +66,7 @@ public class GameController : MonoBehaviour
                 spawnPoints.Add(new Vector3Int(x, y, 0));
             }
         }
-        wave = 2;
+        wave = 0;
         numEnemies = 0;
         gameState = GameState.Farming;
     }
@@ -72,6 +74,18 @@ public class GameController : MonoBehaviour
     void Start()
     {
         StartNextWave();
+    }
+
+    void Update()
+    {
+        string plantStr = "";
+        foreach(var plant in ResourceManager.Instance.Seeds)
+        {
+            plantStr += "{plant.key.name}: {plant.value}\n";
+        }
+
+        farmUI.transform.Find("Resources").GetComponent<TMP_Text>().text = 
+            $"Metal: {ResourceManager.Instance.Metal}\nEnergy: {ResourceManager.Instance.Energy}";
     }
 
     void OnEnable()
@@ -82,11 +96,6 @@ public class GameController : MonoBehaviour
     void OnDisable()
     {
         inputReader.SpawnWaveEvent -= StartNextWave;
-    }
-
-    void Update()
-    {
-
     }
 
     public void AddPlaceable(Placeable placeable)
@@ -110,52 +119,54 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void OnEnemyDie()
+    void StartFarming()
     {
-        numEnemies--;
-        if (numEnemies == 0)
+        if (gameState == GameState.Defending)
         {
-            EndWave();
+            WaveEndEvent?.Invoke();
+            gameState = GameState.Farming;
+            farmUI.SetActive(true);
         }
     }
 
     public void StartNextWave()
     {
-        StartCoroutine(SpawnEnemies());
+        if (gameState == GameState.Farming)
+        {
+            gameState = GameState.EnemiesSpawning;
+            farmUI.SetActive(false);
+            StartCoroutine(SpawnEnemies());
+        }
     }
 
     IEnumerator SpawnEnemies()
     {
-        if (gameState == GameState.Farming)
+        Vector3 pos;
+        wave++;
+        for(int i = 0; i < Mathf.Pow(wave, 2); i++)
         {
-            Vector3 pos;
-            wave++;
-            for(int i = 0; i < Mathf.Pow(wave, 2); i++)
-            {
-                pos = GetRandomSpawnPoint();
-                GameObject.Instantiate(enemyPrefab, pos, Quaternion.identity);
-                numEnemies++;
-                yield return new WaitForSeconds(.59f);
-            }
-            gameState = GameState.Defending;
+            pos = GetRandomSpawnPoint();
+            GameObject.Instantiate(enemyPrefab, pos, Quaternion.identity);
+            numEnemies++;
+            yield return new WaitForSeconds(.59f);
         }
-        yield return null;
+        gameState = GameState.Defending;
     }
 
     Vector3Int GetRandomSpawnPoint()
     {
         return spawnPoints[Random.Range(0, spawnPoints.Count)];
     }
-
-    void EndWave()
+    public void OnEnemyDie()
     {
-        WaveEndEvent?.Invoke();
-        gameState = GameState.Farming;
+        numEnemies--;
+        if (numEnemies == 0)
+        {
+            StartFarming();
+        }
     }
 
-
     /* Getters */
-    public List<GameObject> GetTowers() { return towers; }
     public Grid GetGrid() { return grid; }
     public Tilemap GetTilemap() { return tilemap; }
 }
