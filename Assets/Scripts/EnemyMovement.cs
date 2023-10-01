@@ -86,7 +86,7 @@ public class EnemyMovement : MonoBehaviour
         return (
             (-1 * GameController.X_LIM <= cell.x && cell.x <= GameController.X_LIM) && 
             (-1 * GameController.Y_LIM <= cell.y && cell.y <= GameController.Y_LIM) && 
-            !GameController.gameController.GetTilemap().HasTile(cell)
+            !GameController.gameController.HasLand(cell)
         );
     }
 
@@ -146,6 +146,7 @@ public class EnemyMovement : MonoBehaviour
 
         foreach (var target in targets)
         {
+            if (target == null) continue;
             newDistance = Vector3.Distance(this.transform.position, target.transform.position);
             if (newDistance < distance)
             {

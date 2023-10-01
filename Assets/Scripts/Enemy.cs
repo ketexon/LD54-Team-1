@@ -58,7 +58,7 @@ public class Enemy : MonoBehaviour, IHealthEntity
         {
             var indicatorGo = Instantiate(textIndicatorPrefab, transform.position, Quaternion.identity);
             var indicator = indicatorGo.GetComponent<TextIndicator>();
-            indicator.Text = drop.IndicatorText(dropSettings.MetalSpriteIndex, dropSettings.EnergySpriteIndex);
+            indicator.Text = drop.IndicatorText(dropSettings);
             ResourceManager.Instance.AddDrop(drop);
         }
     }

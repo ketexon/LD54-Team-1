@@ -131,8 +131,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   textIndicatorPrefab: {fileID: 3276284391420294907, guid: 5c3989b927e82dd4ab09f4ba2e0eab06, type: 3}
-  metalCost: 10
-  energyCost: 10
+  metalCost: 0
+  energyCost: 0
   Range: 5
   enemyLayerMask:
     serializedVersion: 2

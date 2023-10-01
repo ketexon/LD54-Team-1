@@ -22,11 +22,21 @@ public class GameController : MonoBehaviour
     [SerializeField] InputReader inputReader;
     [SerializeField] private GameObject enemyPrefab;
     
-    [SerializeField] private List<Placeable> placeables;
     [SerializeField] private Grid grid;
-    [SerializeField] private Tilemap tilemap;
+    [SerializeField] private Tilemap landTilemap;
+    [SerializeField] private Tilemap otherTilemap;
 
+    public System.Action WaveEndEvent;
+
+    List<Placeable> placeables = new();
+    
     public IReadOnlyList<Placeable> Placeables => placeables;
+
+    List<PlantBuff> plantBuffs = new();
+    public IReadOnlyList<PlantBuff> PlantBuffs => plantBuffs;
+
+    public PlantBuff NetPlantBuff { get; private set; } = new();
+
 
     [SerializeField] private GameObject farmUI;
     
@@ -84,20 +94,58 @@ public class GameController : MonoBehaviour
         inputReader.SpawnWaveEvent -= StartNextWave;
     }
 
+    public void AddPlaceable(Placeable placeable)
+    {
+        placeables.Add(placeable);
+
+        if(placeable is Plant plant)
+        {
+            plantBuffs.Add(plant.Stats.Buff);
+            NetPlantBuff += plant.Stats.Buff;
+        }
+    }
+
     public void OnPlaceableDie(Placeable placeable)
     {
         placeables.Remove(placeable);
+        if(placeable is Plant plant)
+        {
+            plantBuffs.Remove(plant.Stats.Buff);
+            NetPlantBuff += -plant.Stats.Buff;
+        }
+    }
+
+    public void SetLand(Vector3Int loc, Tile tile)
+    {
+        landTilemap.SetTile(loc, tile);
+    }
+
+    public void SetBuilding(Vector3Int loc, Tile tile)
+    {
+        otherTilemap.SetTile(loc, tile);
     }
 
     public bool HasFertileLand(Vector3Int loc)
     {
-        return true;
+        return landTilemap.HasTile(loc) &&
+                landTilemap.GetInstantiatedObject(loc).GetComponent<Land>().status == Land.LandStatus.Fertile;
+    }
+    
+    public bool HasBuilding(Vector3Int loc)
+    {
+        return otherTilemap.HasTile(loc);
+    }
+
+    public bool HasLand(Vector3Int loc)
+    {
+        return landTilemap.HasTile(loc);
     }
     
     void StartFarming()
     {
         if (gameState == GameState.Defending)
         {
+            WaveEndEvent?.Invoke();
             gameState = GameState.Farming;
             farmUI.SetActive(true);
         }
@@ -111,6 +159,11 @@ public class GameController : MonoBehaviour
             farmUI.SetActive(false);
             StartCoroutine(SpawnEnemies());
         }
+    }
+
+    public void RemoveLandTile(Vector3 loc)
+    {
+        landTilemap.SetTile(grid.WorldToCell(loc), null);
     }
 
     IEnumerator SpawnEnemies()
@@ -143,5 +196,4 @@ public class GameController : MonoBehaviour
 
     /* Getters */
     public Grid GetGrid() { return grid; }
-    public Tilemap GetTilemap() { return tilemap; }
 }

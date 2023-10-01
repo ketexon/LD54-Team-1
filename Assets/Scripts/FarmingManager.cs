@@ -10,13 +10,15 @@ public class FarmingManager : MonoBehaviour
     [SerializeField] private Grid grid;
     [SerializeField] private PlaceableSO initialSelection;
 
+    private PlaceableSO currentSelectionSO;
     private GameObject currentSelection;
     private GraphicRaycaster gr;
 
     void Start()
     {
         gr = this.GetComponent<GraphicRaycaster>();
-        currentSelection = GameObject.Instantiate(initialSelection.prefab);
+        currentSelectionSO = initialSelection;
+        currentSelection = GameObject.Instantiate(initialSelection.gameObject);
     }
 
     void OnEnable()
@@ -43,17 +45,20 @@ public class FarmingManager : MonoBehaviour
     {
         if (place && CanPlace())
         {
-            if (currentSelection.GetComponent<Placeable>().TryPlace(grid.WorldToCell(currentSelection.transform.position)))
-            {
-                currentSelection = GameObject.Instantiate(currentSelection);
-            }
+            currentSelection.GetComponent<Placeable>()
+                            .TryPlace(
+                                grid.WorldToCell(currentSelection.transform.position),
+                                currentSelectionSO
+                            );
         }
     }
     
     public void SetSelection(PlaceableSO selection)
     {
         Destroy(currentSelection);
-        currentSelection = GameObject.Instantiate(selection.prefab);
+        currentSelectionSO = selection;
+        currentSelection = GameObject.Instantiate(selection.gameObject);
+        currentSelection.name = "cell temp";
         currentSelection.transform.position = grid.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
 

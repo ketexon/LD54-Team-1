@@ -12,4 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eb4cafa80fec09449f6bd7e39372e00, type: 3}
   m_Name: Land
   m_EditorClassIdentifier: 
-  prefab: {fileID: 2918479875666635477, guid: e451426e1f4549242a2a794f1e9b3806, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b0c97ac79cf5db74c892a7c0c5462bf2, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Transform:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
+  m_InstancedGameObject: {fileID: 2918479875666635477, guid: e451426e1f4549242a2a794f1e9b3806, type: 3}
+  m_Flags: 1
+  m_ColliderType: 1

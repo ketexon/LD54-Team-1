@@ -47,10 +47,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputReader: {fileID: 11400000, guid: 42e174fc76551344d88844e47d1dd54f, type: 2}
   enemyPrefab: {fileID: 2389368801119502656, guid: 7be69c6379e0dbe4198978a665330cab, type: 3}
-  towers:
-  - {fileID: 0}
   grid: {fileID: 0}
-  tilemap: {fileID: 0}
+  landTilemap: {fileID: 0}
+  otherTilemap: {fileID: 0}
+  farmUI: {fileID: 0}
 --- !u!114 &2279133546320533914
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -48,7 +48,12 @@ public class ResourceManager : MonoBehaviour
 
     public void AddDrop(DropSO drop)
     {
-
+        Energy += drop.Energy;
+        Metal += drop.Metal;
+        if(drop.Seed != null)
+        {
+            AddSeed(drop.Seed);
+        }
     }
 
     public void AddSeed(PlantSO seed, int count = 1)
