@@ -10,6 +10,9 @@ public abstract class Placeable : MonoBehaviour, IHealthEntity
 
     float health;
 
+
+    [SerializeField] protected PlaceableSO associatedSO;
+    public virtual PlaceableSO GetAssociatedSO() => associatedSO;
     [SerializeField] protected int metalCost;
     [SerializeField] protected int energyCost;
 

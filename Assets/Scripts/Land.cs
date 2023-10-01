@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Land : Placeable
+public class Land : Placeable, IPointerDownHandler
 {
     public enum LandStatus
     {
@@ -10,10 +11,14 @@ public class Land : Placeable
         Fertile
     }
 
+    [SerializeField] private PlaceableSO infertileSO;
+    [SerializeField] private PlaceableSO fertileSO;
+
     [SerializeField] private Sprite infertileSprite;
     [SerializeField] private Sprite fertileSprite;
 
-    public LandStatus status;
+    [SerializeField] private LandStatus status;
+    public LandStatus GetStatus() => status;
 
     public override void Die()
     {
@@ -35,5 +40,19 @@ public class Land : Placeable
     public override void Place(Vector3Int loc, PlaceableSO placeable)
     {
         GameController.gameController.SetLand(loc, placeable);
+    }
+
+    public void TryFertilize()
+    {
+        if (energyCost <= ResourceManager.Instance.Energy)
+        {
+            ResourceManager.Instance.Energy -= energyCost;
+            GameController.gameController.SetLand(GameController.gameController.GetGrid().WorldToCell(this.transform.position), fertileSO);
+        }
+    }
+
+    public void OnPointerDown(PointerEventData e)
+    {
+        if (status == LandStatus.Infertile) TryFertilize();
     }
 }

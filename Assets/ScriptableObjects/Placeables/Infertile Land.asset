@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5eb4cafa80fec09449f6bd7e39372e00, type: 3}
-  m_Name: Land
+  m_Name: Infertile Land
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: b0c97ac79cf5db74c892a7c0c5462bf2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

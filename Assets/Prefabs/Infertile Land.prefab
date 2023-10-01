@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 7879730761787732858}
   - component: {fileID: -6753889888488396008}
   - component: {fileID: 8464917039617838295}
+  - component: {fileID: 8581728293436549001}
   m_Layer: 0
-  m_Name: Land
+  m_Name: Infertile Land
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,8 +48,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   textIndicatorPrefab: {fileID: 3276284391420294907, guid: 5c3989b927e82dd4ab09f4ba2e0eab06, type: 3}
+  associatedSO: {fileID: 11400000, guid: 5621fbce62d644247aa4142321ee482a, type: 2}
   metalCost: 0
   energyCost: 0
+  infertileSO: {fileID: 11400000, guid: 5621fbce62d644247aa4142321ee482a, type: 2}
+  fertileSO: {fileID: 11400000, guid: 8ad71e66c24f49a4c82ca8bb63825175, type: 2}
   infertileSprite: {fileID: 21300000, guid: b0c97ac79cf5db74c892a7c0c5462bf2, type: 3}
   fertileSprite: {fileID: 21300000, guid: d96310a68095ccf489630f80ebfe3c95, type: 3}
   status: 0
@@ -104,3 +108,48 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &8581728293436549001
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2918479875666635477}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0

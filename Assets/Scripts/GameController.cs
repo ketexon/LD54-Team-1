@@ -70,6 +70,7 @@ public class GameController : MonoBehaviour
         wave = 0;
         numEnemies = 0;
         gameState = GameState.Farming;
+        RegisterInitialTiles();
     }
 
     void Update()
@@ -128,7 +129,7 @@ public class GameController : MonoBehaviour
     public bool HasFertileLand(Vector3Int loc)
     {
         return landTilemap.HasTile(loc) &&
-                landTilemap.GetInstantiatedObject(loc).GetComponent<Land>().status == Land.LandStatus.Fertile;
+                landTilemap.GetInstantiatedObject(loc).GetComponent<Land>().GetStatus() == Land.LandStatus.Fertile;
     }
     
     public bool HasBuilding(Vector3Int loc)
@@ -183,6 +184,29 @@ public class GameController : MonoBehaviour
     Vector3Int GetRandomSpawnPoint()
     {
         return spawnPoints[Random.Range(0, spawnPoints.Count)];
+    }
+
+    void RegisterInitialTiles()
+    {
+        int i;
+        Transform tile;
+        int lim = landTilemap.transform.childCount;
+        for(i = 0; i < lim; i++)
+        {
+            tile = landTilemap.transform.GetChild(i);
+            Vector3Int loc = grid.WorldToCell(tile.position);
+            landTilemap.SetTile(loc, tile.gameObject.GetComponent<Placeable>().GetAssociatedSO());
+            // landTilemap.GetInstantiatedObject(loc).GetComponent<Land>().SetStatus(tile.gameObject.GetComponent<Land>().GetStatus());
+            Destroy(tile.gameObject);
+        }
+        
+        lim = otherTilemap.transform.childCount;
+        for(i = 0; i < lim; i++)
+        {
+            tile = otherTilemap.transform.GetChild(i);
+            otherTilemap.SetTile(grid.WorldToCell(tile.position), tile.gameObject.GetComponent<Placeable>().GetAssociatedSO());
+            Destroy(tile.gameObject);
+        }
     }
 
     public void OnEnemyDie()
