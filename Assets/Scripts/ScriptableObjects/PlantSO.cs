@@ -47,4 +47,5 @@ public class PlantSO : PlaceableSO
     public PlantBuff Buff;
     public int HarvestCycleLength;
     public DropSO HarvestDrop;
+    public GameObject Prefab;
 }
