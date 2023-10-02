@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
@@ -12,9 +13,9 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] private List<AudioClip> audioClips;
 
-    private float masterVolume;
-    private float musicVolume;
-    private float sfxVolume;
+    private float masterVolume=1f;
+    private float musicVolume=1f;
+    private float sfxVolume=1f;
 
     void Awake()
     {
@@ -33,6 +34,11 @@ public class AudioManager : MonoBehaviour
         loopSource.PlayScheduled(AudioSettings.dspTime + .1f + 1.69f);
     }
 
+    public void PlayButtonSFX()
+    {
+        PlaySFX(4);
+    }
+
     public void PlaySFX(int which, float volume=1f)
     {
         sfxSource.PlayOneShot(audioClips[which], volume);
@@ -45,21 +51,21 @@ public class AudioManager : MonoBehaviour
         sfxSource.volume = sfxVolume * masterVolume;
     }
 
-    void ChangeMasterVolume(float volume)
+    public void ChangeMasterVolume(Slider s)
     {
-        masterVolume = volume;
+        masterVolume = s.value;
         UpdateVolumes();
     }
 
-    void ChangeMusicVolume(float volume)
+    public void ChangeMusicVolume(Slider s)
     {
-        musicVolume = volume;
+        musicVolume = s.value;
         UpdateVolumes();
     }
 
-    void ChangeSFXVolume(float volume)
+    public void ChangeSFXVolume(Slider s)
     {
-        sfxVolume = volume;
+        sfxVolume = s.value;
         UpdateVolumes();
     }
 }
