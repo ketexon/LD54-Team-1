@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 5811448380679809798}
   - component: {fileID: 7826635812978246521}
   m_Layer: 0
-  m_Name: Thorny
+  m_Name: Thorny Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

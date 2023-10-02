@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 // Base class for all objects that can be placed on the grid
 public abstract class Placeable : MonoBehaviour, IHealthEntity
@@ -10,8 +11,8 @@ public abstract class Placeable : MonoBehaviour, IHealthEntity
 
     float health;
 
-    [SerializeField] protected int metalCost;
-    [SerializeField] protected int energyCost;
+    [FormerlySerializedAs("placeableSO")]
+    [SerializeField] public PlaceableSO PlaceableSO;
 
     virtual protected void Awake()
     {
@@ -51,7 +52,16 @@ public abstract class Placeable : MonoBehaviour, IHealthEntity
         }
     }
 
-    public abstract bool ValidatePlace(Vector3Int loc);
-    public abstract void UpdateResources();
-    public abstract void Place(Vector3Int loc, PlaceableSO placeable);
+    public virtual bool ValidatePlace(Vector3Int loc)
+    {
+        return ResourceManager.Instance.CanAfford(PlaceableSO);
+    }
+    public virtual void UpdateResources()
+    {
+        ResourceManager.Instance.Buy(PlaceableSO);
+    }
+    public virtual void Place(Vector3Int loc, PlaceableSO placeable)
+    {
+        GameController.gameController.SetBuilding(loc, placeable);
+    }
 }

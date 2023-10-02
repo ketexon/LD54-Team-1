@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5811448380679809798}
   - component: {fileID: 2150015933184943306}
   m_Layer: 0
-  m_Name: Viney
+  m_Name: Viney Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

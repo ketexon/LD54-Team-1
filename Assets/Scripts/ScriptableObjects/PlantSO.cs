@@ -42,10 +42,8 @@ public class PlantBuff
 [CreateAssetMenu(fileName = "Plant", menuName = "Placeables/Plant", order = 1)]
 public class PlantSO : PlaceableSO
 {
-    public string Name;
     public int SeedSpriteIndex;
     public PlantBuff Buff;
     public int HarvestCycleLength;
     public DropSO HarvestDrop;
-    public GameObject Prefab;
 }

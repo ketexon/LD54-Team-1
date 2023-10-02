@@ -6,6 +6,11 @@ public class ResourceManager : MonoBehaviour
 {
     public static ResourceManager Instance { get; private set; }
 
+    [SerializeField] int startingMetal;
+    [SerializeField] int startingEnergy;
+    [SerializeField] List<PlantSO> startingSeeds;
+
+    public System.Action ResourcesChanged;
     public System.Action<int> MetalChanged;
     public System.Action<int> EnergyChanged;
     public System.Action<PlantSO, int> SeedCountChanged;
@@ -16,8 +21,13 @@ public class ResourceManager : MonoBehaviour
         get => metal_;
         set
         {
+            var old = Metal;
             metal_ = value;
-            MetalChanged?.Invoke(Metal);
+            if(old != Metal)
+            {
+                MetalChanged?.Invoke(Metal);
+                ResourcesChanged?.Invoke();
+            }
         }
     }
 
@@ -27,8 +37,13 @@ public class ResourceManager : MonoBehaviour
         get => energy_;
         set
         {
+            var old = Energy;
             energy_ = value;
-            EnergyChanged?.Invoke(Energy);
+            if (old != Energy)
+            {
+                EnergyChanged?.Invoke(Energy);
+                ResourcesChanged?.Invoke();
+            }
         }
     }
 
@@ -44,6 +59,13 @@ public class ResourceManager : MonoBehaviour
         }
 
         Instance = this;
+
+        Metal = startingMetal;
+        Energy = startingEnergy;
+        foreach(var seed in startingSeeds)
+        {
+            AddSeed(seed);
+        }
     }
 
     public void AddDrop(DropSO drop)
@@ -58,12 +80,31 @@ public class ResourceManager : MonoBehaviour
 
     public void AddSeed(PlantSO seed, int count = 1)
     {
-        seeds_[seed] += count;
+        seeds_[seed] = seeds_.GetValueOrDefault(seed) + count;
         SeedCountChanged?.Invoke(seed, Seeds[seed]);
+        ResourcesChanged?.Invoke();
     }
 
     public void UseSeed(PlantSO seed, int count = 1)
     {
         AddSeed(seed, -count);
+    }
+
+    public bool CanAfford(PlaceableSO placeable)
+    {
+        var cost = placeable.Cost;
+        return Metal >= cost.Metal && Energy >= cost.Energy && (
+            !(placeable is PlantSO plant) || Seeds.GetValueOrDefault(plant) > 0
+        );
+    }
+
+    public void Buy(PlaceableSO placeable)
+    {
+        Metal -= placeable.Cost.Metal;
+        Energy -= placeable.Cost.Energy;
+        if(placeable is PlantSO plant)
+        {
+            UseSeed(plant);
+        }
     }
 }

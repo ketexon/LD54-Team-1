@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlantDatabase", menuName = "Plants/Plant Database", order = 0)]
-public class PlantDatabaseSO : ScriptableObject
+public class PlaceableDatabaseSO : ScriptableObject
 {
-    public List<PlantSO> Plants = new();
+    public List<PlaceableSO> Placeables = new();
 }

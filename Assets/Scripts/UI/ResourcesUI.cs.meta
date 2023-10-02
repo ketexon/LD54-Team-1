@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4d27750f0fb5ba141987a625572a420f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - dropSettings: {fileID: 11400000, guid: 165ad3ed5e9e9344b88da731caf155ae, type: 2}
+  - energyText: {instanceID: 0}
+  - metalText: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

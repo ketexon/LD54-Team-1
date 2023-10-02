@@ -47,8 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   textIndicatorPrefab: {fileID: 3276284391420294907, guid: 5c3989b927e82dd4ab09f4ba2e0eab06, type: 3}
-  metalCost: 0
-  energyCost: 0
+  placeableSO: {fileID: 11400000, guid: 30b878946721ddb4d9d292182ea11249, type: 2}
   Range: 5
   enemyLayerMask:
     serializedVersion: 2
@@ -60,6 +59,8 @@ MonoBehaviour:
     PeirceCap: 100
     Range: 10
   shotPrefab: {fileID: 932261370766480157, guid: 63ba5a0d38f88ce4cb8bc2d676af1b8f, type: 3}
+  inactiveSprite: {fileID: 0}
+  activeSprite: {fileID: 0}
 --- !u!212 &4441505179002616800
 SpriteRenderer:
   m_ObjectHideFlags: 0
