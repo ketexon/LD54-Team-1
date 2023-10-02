@@ -63,6 +63,7 @@ public abstract class Placeable : MonoBehaviour, IHealthEntity
         }
         else
         {
+            AudioManager.Instance.PlaySFX(5);
             Destroy(this.gameObject);
         }
     }

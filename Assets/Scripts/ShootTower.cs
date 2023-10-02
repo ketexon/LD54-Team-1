@@ -41,6 +41,7 @@ public class OrbTower : Tower
             var go = Instantiate(shotPrefab, transform.position + TOWER_OFFSET, Quaternion.Euler(0, 0, theta * 180 / Mathf.PI));
             var shot = go.GetComponent<Shot>();
             shot.Initialize(shotParams);
+            AudioManager.Instance.PlaySFX(0);
 
             var buff = GameController.gameController.NetPlantBuff;
             shotParams += buff.DeltaShotParams;

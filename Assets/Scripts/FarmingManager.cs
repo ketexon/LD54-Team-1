@@ -89,6 +89,7 @@ public class FarmingManager : MonoBehaviour
     
     public void SetSelection(PlaceableSO selection)
     {
+        if (selection != null) AudioManager.Instance.PlaySFX(4);
         if (selection == null) selection = initialSelection;
         if (currentSelection != null) Destroy(currentSelection);
         currentSelectionSO = selection;

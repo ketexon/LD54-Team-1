@@ -46,6 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   textIndicatorPrefab: {fileID: 3276284391420294907, guid: 5c3989b927e82dd4ab09f4ba2e0eab06, type: 3}
-  placeableSO: {fileID: 11400000, guid: eb463afe67972b14db0fe8951d3a872a, type: 2}
-  Stats: {fileID: 11400000, guid: 91ad2d5d3483e1f4085121feddc45c72, type: 2}
+  associatedSO: {fileID: 11400000, guid: eb463afe67972b14db0fe8951d3a872a, type: 2}
   dropSettings: {fileID: 11400000, guid: 165ad3ed5e9e9344b88da731caf155ae, type: 2}

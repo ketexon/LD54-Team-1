@@ -40,20 +40,7 @@ public class Land : Placeable
     public override void Place(Vector3Int loc, PlaceableSO placeable)
     {
         GameController.gameController.SetLand(loc, placeable);
+        if (status == LandStatus.Infertile) AudioManager.Instance.PlaySFX(1);
+        else                                AudioManager.Instance.PlaySFX(3);
     }
-
-    // public void TryFertilize()
-    // {
-    //     if (ResourceManager.Instance.CanAfford(fertileSO))
-    //     {
-    //         Debug.Log("buyiung");
-    //         ResourceManager.Instance.Buy(fertileSO);
-    //         GameController.gameController.SetLand(GameController.gameController.GetGrid().WorldToCell(this.transform.position), fertileSO);
-    //     }
-    // }
-
-    // public void OnPointerDown(PointerEventData e)
-    // {
-    //     if (status == LandStatus.Infertile) TryFertilize();
-    // }
 }

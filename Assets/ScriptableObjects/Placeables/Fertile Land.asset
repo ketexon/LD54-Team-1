@@ -36,7 +36,7 @@ MonoBehaviour:
   m_ColliderType: 1
   Name: Fix Land
   Cost:
-    Energy: 50
+    Energy: 25
     Metal: 0
   ShopSprite: {fileID: 21300000, guid: 216827ee17eaa9842a2492b3b5090b9a, type: 3}
   SpritePrefab: {fileID: 6554255944433622598, guid: e51edb8f563faef49b364a6eef81c6cb, type: 3}

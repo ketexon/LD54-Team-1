@@ -59,6 +59,7 @@ public class ShopItem : MonoBehaviour
 
     public void SelectShopItem()
     {
+        Debug.Log("trigger");
         manager.SetSelection(placeable);
     }
 }

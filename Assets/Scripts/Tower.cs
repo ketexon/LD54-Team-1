@@ -61,5 +61,6 @@ public class Tower : Placeable
     public override void Place(Vector3Int loc, PlaceableSO placeable)
     {
         GameController.gameController.SetBuilding(loc, placeable);
+        AudioManager.Instance.PlaySFX(2);
     }
 }

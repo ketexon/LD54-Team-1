@@ -46,12 +46,12 @@ public class Plant : Placeable
     
     public override void Die()
     {
-
+        GameController.gameController.OnPlaceableDie(this);
+        GameController.gameController.RemoveBuilding(this.transform.position);
     }
     
     public override bool ValidatePlace(Vector3Int loc)
     {
-        // FIXME: something w/ seeds idk
         return base.ValidatePlace(loc) 
             && GameController.gameController.HasFertileLand(loc)
             && !GameController.gameController.HasBuilding(loc);
@@ -59,6 +59,7 @@ public class Plant : Placeable
 
     public override void Place(Vector3Int loc, PlaceableSO placeable)
     {
-
+        GameController.gameController.SetBuilding(loc, placeable);
+        AudioManager.Instance.PlaySFX(3);
     }
 }
