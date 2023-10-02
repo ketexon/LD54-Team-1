@@ -28,18 +28,12 @@ public class Land : Placeable, IPointerDownHandler
 
     public override bool ValidatePlace(Vector3Int loc)
     {
-        // TOOD: somethign with hammers idk
-        return !GameController.gameController.HasLand(loc);
-    }
-
-    public override void UpdateResources()
-    {
-        // TOOD: somethign with hammers idk
+        return base.ValidatePlace(loc) && !GameController.gameController.HasLand(loc);
     }
 
     public override void Place(Vector3Int loc, PlaceableSO placeable)
     {
-        GameController.gameController.SetLand(loc, placeable);
+        //GameController.gameController.SetLand(loc, placeable);
     }
 
     public void TryFertilize()

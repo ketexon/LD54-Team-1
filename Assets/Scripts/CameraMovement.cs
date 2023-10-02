@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Camera))]
 public class CameraMovement : MonoBehaviour
@@ -18,6 +19,8 @@ public class CameraMovement : MonoBehaviour
 
     Vector2? panStartPointPosWorld = null;
     Vector3? panStartTransformPos = null;
+
+    bool pointerOverUI = false;
 
     void Awake()
     {
@@ -40,6 +43,11 @@ public class CameraMovement : MonoBehaviour
         inputReader.ScrollEvent -= OnScroll;
     }
 
+    void Update()
+    {
+        pointerOverUI = EventSystem.current.IsPointerOverGameObject();
+    }
+
     void OnClick(bool clicking) { }
 
     void OnPoint(Vector2 pos)
@@ -58,8 +66,11 @@ public class CameraMovement : MonoBehaviour
     {
         if (down)
         {
-            panStartPointPosWorld = camera.ScreenToWorldPoint(lastPointPos);
-            panStartTransformPos = transform.position;
+            if (!pointerOverUI)
+            {
+                panStartPointPosWorld = camera.ScreenToWorldPoint(lastPointPos);
+                panStartTransformPos = transform.position;
+            }
         }
         else
         {
@@ -70,6 +81,7 @@ public class CameraMovement : MonoBehaviour
 
     void OnScroll(float delta)
     {
+        if (pointerOverUI) return;
         Vector3 oldPoint = camera.ScreenToWorldPoint(lastPointPos);
         camera.orthographicSize = Mathf.Clamp(camera.orthographicSize - delta * scrollSensitivity, minCameraOrthoSize, maxCameraOrthoSize);
         Vector3 newPoint = camera.ScreenToWorldPoint(lastPointPos);

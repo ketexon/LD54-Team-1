@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Plant : Placeable
 {
-    [SerializeField] public PlantSO Stats;
     [SerializeField] DropSettingsSO dropSettings;
+
+    public PlantSO Stats => (PlantSO)PlaceableSO;
 
     int wavesUntilHarvest;
 
@@ -14,7 +15,7 @@ public class Plant : Placeable
         base.Awake();
         wavesUntilHarvest = Stats.HarvestCycleLength;
 
-        Instantiate(Stats.Prefab, transform.position, Quaternion.identity, transform);
+        Instantiate(Stats.SpritePrefab, transform.position, Quaternion.identity, transform);
     }
 
     override protected void Start()
@@ -51,12 +52,9 @@ public class Plant : Placeable
     public override bool ValidatePlace(Vector3Int loc)
     {
         // FIXME: something w/ seeds idk
-        return GameController.gameController.HasFertileLand(loc);
-    }
-
-    public override void UpdateResources()
-    {
-        // FIXME: something w/ seeds idk
+        return base.ValidatePlace(loc) 
+            && GameController.gameController.HasFertileLand(loc)
+            && !GameController.gameController.HasBuilding(loc);
     }
 
     public override void Place(Vector3Int loc, PlaceableSO placeable)

@@ -31,10 +31,15 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 1
-  m_InstancedGameObject: {fileID: 0}
+  m_InstancedGameObject: {fileID: 7834310038055191436, guid: 00734037bed9ea14cabdcd9790a463f2, type: 3}
   m_Flags: 1
   m_ColliderType: 1
   Name: Shroomy
+  Cost:
+    Energy: 2
+    Metal: 0
+  ShopSprite: {fileID: 21300000, guid: c632bf01f446ca34fa9ea593ac9c480d, type: 3}
+  SpritePrefab: {fileID: 1463023482617577174, guid: 555e560b4ee284f41949f434e0ab86ab, type: 3}
   SeedSpriteIndex: 0
   Buff:
     ShotIntervalMult: 1
@@ -45,4 +50,3 @@ MonoBehaviour:
       Range: 0
   HarvestCycleLength: 4
   HarvestDrop: {fileID: 11400000, guid: 8f8473225ea0bae428e8356012d6cde3, type: 2}
-  Prefab: {fileID: 1463023482617577174, guid: 555e560b4ee284f41949f434e0ab86ab, type: 3}

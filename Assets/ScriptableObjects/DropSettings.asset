@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6e1900d10d921946bc9e2cf7a80b629, type: 3}
   m_Name: DropSettings
   m_EditorClassIdentifier: 
+  MetalSpriteIndex: 0
+  EnergySpriteIndex: 1
   Pools:
   - Weight: 10
     Drops: []

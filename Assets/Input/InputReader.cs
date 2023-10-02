@@ -52,7 +52,7 @@ public class InputReader : ScriptableObject, Controls.IGameplayActions
     public void OnScroll(InputAction.CallbackContext context)
     {
         // divide by 120 b/c one tick of scroll is 120f
-        ScrollEvent?.Invoke(context.ReadValue<float>() / 120f);
+        ScrollEvent?.Invoke(context.ReadValue<Vector2>().y / 120f);
     }
 
     public void OnSpawnWave(InputAction.CallbackContext context)

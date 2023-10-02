@@ -53,20 +53,8 @@ public class Tower : Placeable
 
     public override bool ValidatePlace(Vector3Int loc)
     {
-        return metalCost <= ResourceManager.Instance.Metal && 
-               energyCost <= ResourceManager.Instance.Energy &&
+        return base.ValidatePlace(loc) &&
                GameController.gameController.HasFertileLand(loc) &&
                !GameController.gameController.HasBuilding(loc);
-    }
-
-    public override void UpdateResources()
-    {
-        ResourceManager.Instance.Metal -= metalCost;
-        ResourceManager.Instance.Energy -= energyCost;
-    }
-
-    public override void Place(Vector3Int loc, PlaceableSO placeable)
-    {
-        GameController.gameController.SetBuilding(loc, placeable);
     }
 }

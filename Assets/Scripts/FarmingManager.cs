@@ -11,14 +11,19 @@ public class FarmingManager : MonoBehaviour
     [SerializeField] private Grid grid;
     [SerializeField] private PlaceableSO initialSelection;
     [SerializeField] private GameObject emptyObject;
+    [SerializeField] private GraphicRaycaster gr;
+    [SerializeField] private PlaceableDatabaseSO placeableDatabase;
+    [SerializeField] private GameObject shopItemPrefab;
+    [SerializeField] private GameObject shopItemParent;
 
     private PlaceableSO currentSelectionSO;
     private GameObject currentSelection;
-    private GraphicRaycaster gr;
 
-    void Start()
+    Vector2 point;
+
+    void Reset()
     {
-        gr = this.GetComponent<GraphicRaycaster>();
+        gr = GetComponentInParent<GraphicRaycaster>();
     }
 
     void OnEnable()
@@ -35,21 +40,39 @@ public class FarmingManager : MonoBehaviour
         inputReader.ClickEvent -= PlaceCurrentSelection;
     }
 
+    void Start()
+    {
+        // clear shopItemParent
+        foreach(Transform child in shopItemParent.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach(var placeable in placeableDatabase.Placeables)
+        {
+            var shopItemGO = Instantiate(shopItemPrefab, shopItemParent.transform);
+            var shopItem = shopItemGO.GetComponent<ShopItem>();
+            shopItem.Initialize(this, placeable);
+        }
+    }
+
     void SnapCurrentSelectionToGrid(Vector2 loc)
     {
+        point = loc;
         if (currentSelection != null)
         {
             currentSelection.transform.position =
                 grid.GetCellCenterWorld(
                     grid.WorldToCell(Camera.main.ScreenToWorldPoint(loc))
-                    );
+                );
         }
     }
 
     void PlaceCurrentSelection(bool place)
     {
-        if (place && CanPlace())
+        if (place && CanPlace() && ResourceManager.Instance.CanAfford(currentSelectionSO) )
         {
+            Debug.Log(currentSelectionSO);
             GameObject temp = GameObject.Instantiate(currentSelectionSO.gameObject);
             try {
                 temp.GetComponent<Placeable>()
@@ -70,15 +93,14 @@ public class FarmingManager : MonoBehaviour
         if (selection == null) selection = initialSelection;
         if (currentSelection != null) Destroy(currentSelection);
         currentSelectionSO = selection;
-        currentSelection = GameObject.Instantiate(emptyObject);
-        currentSelection.GetComponent<SpriteRenderer>().sprite = selection.sprite;
+        currentSelection = Instantiate(currentSelectionSO.SpritePrefab);
+        //currentSelection.GetComponent<SpriteRenderer>().sprite = selection.sprite;
         currentSelection.transform.position = grid.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
 
     public bool CanPlace()
     {
-        PointerEventData ped = new PointerEventData(null);
-        ped.position = Input.mousePosition;
+        PointerEventData ped = new PointerEventData(null) { position = point };
         List<RaycastResult> results = new List<RaycastResult>();
         gr.Raycast(ped, results);
         return results.Count == 0;

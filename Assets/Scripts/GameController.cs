@@ -80,9 +80,6 @@ public class GameController : MonoBehaviour
         {
             plantStr += "{plant.key.name}: {plant.value}\n";
         }
-
-        farmUI.transform.Find("Resources").GetComponent<TMP_Text>().text = 
-            $"Metal: {ResourceManager.Instance.Metal}\nEnergy: {ResourceManager.Instance.Energy}";
     }
 
     void OnEnable()
@@ -171,6 +168,7 @@ public class GameController : MonoBehaviour
 
     public void StartNextWave()
     {
+        Debug.Log("HI");
         if (gameState == GameState.Farming)
         {
             gameState = GameState.EnemiesSpawning;
