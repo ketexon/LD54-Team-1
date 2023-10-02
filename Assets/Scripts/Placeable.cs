@@ -32,6 +32,22 @@ public abstract class Placeable : MonoBehaviour, IHealthEntity
         var indicator = indicatorGO.GetComponent<TextIndicator>();
         indicator.Text = $"<color=\"red\">-{amount}</color>";
         if (health <= 0) Die();
+        StartCoroutine(FlashRed());
+    }
+
+    IEnumerator FlashRed()
+    {
+        SpriteRenderer sr = this.gameObject.GetComponent<SpriteRenderer>();
+        Color c = Color.red;
+        sr.color = c;
+        for (float i = 0f; i <= 1f; i+=.05f)
+        {
+            c.g = i;
+            c.b = i;
+            sr.color = c;
+            yield return new WaitForSeconds(.05f);
+        }
+        yield return null;
     }
 
     public abstract void Die();

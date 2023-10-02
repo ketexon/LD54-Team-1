@@ -35,8 +35,24 @@ public class Enemy : MonoBehaviour, IHealthEntity
         {
             Die();
         }
+        StartCoroutine(FlashRed());
     }
     
+    IEnumerator FlashRed()
+    {
+        SpriteRenderer sr = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+        Color c = Color.red;
+        sr.material.color = c;
+        for (float i = 0f; i <= 1f; i+=.05f)
+        {
+            c.g = i;
+            c.b = i;
+            sr.material.color = c;
+            yield return new WaitForSeconds(.05f);
+        }
+        yield return null;
+    }
+
     public void Heal(float amount)
     {
         health = Mathf.Min(health + amount, MAX_HEALTH);
