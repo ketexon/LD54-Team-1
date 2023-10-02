@@ -6,7 +6,7 @@ public class Plant : Placeable
 {
     [SerializeField] DropSettingsSO dropSettings;
 
-    public PlantSO Stats => (PlantSO)PlaceableSO;
+    public PlantSO Stats => (PlantSO)associatedSO;
 
     int wavesUntilHarvest;
 

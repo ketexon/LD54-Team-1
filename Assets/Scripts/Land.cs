@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Land : Placeable, IPointerDownHandler
+public class Land : Placeable
 {
     public enum LandStatus
     {
@@ -16,7 +16,7 @@ public class Land : Placeable, IPointerDownHandler
 
     [SerializeField] private Sprite infertileSprite;
     [SerializeField] private Sprite fertileSprite;
-
+    
     [SerializeField] private LandStatus status;
     public LandStatus GetStatus() => status;
 
@@ -28,25 +28,32 @@ public class Land : Placeable, IPointerDownHandler
 
     public override bool ValidatePlace(Vector3Int loc)
     {
-        return base.ValidatePlace(loc) && !GameController.gameController.HasLand(loc);
+        return (
+            base.ValidatePlace(loc) && 
+            (
+                (status == LandStatus.Infertile && !GameController.gameController.HasLand(loc)) ||
+                (status == LandStatus.Fertile   && !GameController.gameController.HasFertileLand(loc))
+            )
+        );
     }
 
     public override void Place(Vector3Int loc, PlaceableSO placeable)
     {
-        //GameController.gameController.SetLand(loc, placeable);
+        GameController.gameController.SetLand(loc, placeable);
     }
 
-    public void TryFertilize()
-    {
-        if (energyCost <= ResourceManager.Instance.Energy)
-        {
-            ResourceManager.Instance.Energy -= energyCost;
-            GameController.gameController.SetLand(GameController.gameController.GetGrid().WorldToCell(this.transform.position), fertileSO);
-        }
-    }
+    // public void TryFertilize()
+    // {
+    //     if (ResourceManager.Instance.CanAfford(fertileSO))
+    //     {
+    //         Debug.Log("buyiung");
+    //         ResourceManager.Instance.Buy(fertileSO);
+    //         GameController.gameController.SetLand(GameController.gameController.GetGrid().WorldToCell(this.transform.position), fertileSO);
+    //     }
+    // }
 
-    public void OnPointerDown(PointerEventData e)
-    {
-        if (status == LandStatus.Infertile) TryFertilize();
-    }
+    // public void OnPointerDown(PointerEventData e)
+    // {
+    //     if (status == LandStatus.Infertile) TryFertilize();
+    // }
 }

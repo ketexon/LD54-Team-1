@@ -38,5 +38,5 @@ MonoBehaviour:
   Cost:
     Energy: 10
     Metal: 10
-  ShopSprite: {fileID: 21300000, guid: d96310a68095ccf489630f80ebfe3c95, type: 3}
+  ShopSprite: {fileID: 21300000, guid: b0c97ac79cf5db74c892a7c0c5462bf2, type: 3}
   SpritePrefab: {fileID: 2918479875666635477, guid: e451426e1f4549242a2a794f1e9b3806, type: 3}

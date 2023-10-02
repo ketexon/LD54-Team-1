@@ -57,4 +57,9 @@ public class Tower : Placeable
                GameController.gameController.HasFertileLand(loc) &&
                !GameController.gameController.HasBuilding(loc);
     }
+
+    public override void Place(Vector3Int loc, PlaceableSO placeable)
+    {
+        GameController.gameController.SetBuilding(loc, placeable);
+    }
 }

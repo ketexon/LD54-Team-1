@@ -168,7 +168,6 @@ public class GameController : MonoBehaviour
 
     public void StartNextWave()
     {
-        Debug.Log("HI");
         if (gameState == GameState.Farming)
         {
             gameState = GameState.EnemiesSpawning;

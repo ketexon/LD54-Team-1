@@ -69,14 +69,13 @@ public abstract class Placeable : MonoBehaviour, IHealthEntity
 
     public virtual bool ValidatePlace(Vector3Int loc)
     {
-        return ResourceManager.Instance.CanAfford(PlaceableSO);
+        return ResourceManager.Instance.CanAfford(associatedSO);
     }
+
     public virtual void UpdateResources()
     {
-        ResourceManager.Instance.Buy(PlaceableSO);
+        ResourceManager.Instance.Buy(associatedSO);
     }
-    public virtual void Place(Vector3Int loc, PlaceableSO placeable)
-    {
-        GameController.gameController.SetBuilding(loc, placeable);
-    }
+
+    public abstract void Place(Vector3Int loc, PlaceableSO placeable);
 }

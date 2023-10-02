@@ -38,8 +38,6 @@ public class PlaceableSO : Tile
         Land, Tower, Plant
     }
 
-    // public GameObject prefab;
-    
     public override void GetTileData(Vector3Int location, ITilemap tilemap, ref TileData tileData)
     {   
         tileData.sprite = this.sprite;

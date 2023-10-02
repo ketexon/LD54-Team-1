@@ -72,7 +72,6 @@ public class FarmingManager : MonoBehaviour
     {
         if (place && CanPlace() && ResourceManager.Instance.CanAfford(currentSelectionSO) )
         {
-            Debug.Log(currentSelectionSO);
             GameObject temp = GameObject.Instantiate(currentSelectionSO.gameObject);
             try {
                 temp.GetComponent<Placeable>()
@@ -93,8 +92,8 @@ public class FarmingManager : MonoBehaviour
         if (selection == null) selection = initialSelection;
         if (currentSelection != null) Destroy(currentSelection);
         currentSelectionSO = selection;
-        currentSelection = Instantiate(currentSelectionSO.SpritePrefab);
-        //currentSelection.GetComponent<SpriteRenderer>().sprite = selection.sprite;
+        currentSelection = GameObject.Instantiate(emptyObject);
+        currentSelection.GetComponent<SpriteRenderer>().sprite = selection.sprite;
         currentSelection.transform.position = grid.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
 

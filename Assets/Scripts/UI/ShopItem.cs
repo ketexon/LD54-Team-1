@@ -17,7 +17,7 @@ public class ShopItem : MonoBehaviour
 
     Button button;
     FarmingManager manager = null;
-    PlaceableSO placeable = null;
+    [SerializeField] PlaceableSO placeable = null;
 
     public void Initialize(FarmingManager manager, PlaceableSO placeable)
     {

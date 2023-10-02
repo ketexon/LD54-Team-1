@@ -43,13 +43,11 @@ public class EnemyMovement : MonoBehaviour
         }
         else if (this.transform.position == to)
         {
-            // Debug.Log($"Reached {to}");
             to = GameController.gameController.GetGrid().GetCellCenterWorld(path[path.Count - 1]);
             path.RemoveAt(path.Count - 1);
         }
         else
         {
-            // Debug.Log($"Moving towards {to}");
             this.transform.position = Vector3.MoveTowards(this.transform.position, to, Time.deltaTime * stats.Speed);
         }
     }
