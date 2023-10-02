@@ -12,9 +12,6 @@ public class FarmingManager : MonoBehaviour
     [SerializeField] private PlaceableSO initialSelection;
     [SerializeField] private GameObject emptyObject;
     [SerializeField] private GraphicRaycaster gr;
-    [SerializeField] private PlaceableDatabaseSO placeableDatabase;
-    [SerializeField] private GameObject shopItemPrefab;
-    [SerializeField] private GameObject shopItemParent;
 
     private PlaceableSO currentSelectionSO;
     private GameObject currentSelection;
@@ -25,7 +22,7 @@ public class FarmingManager : MonoBehaviour
     {
         gr = GetComponentInParent<GraphicRaycaster>();
     }
-
+    
     void OnEnable()
     {
         if (currentSelection == null) SetSelection(currentSelectionSO);
@@ -38,22 +35,6 @@ public class FarmingManager : MonoBehaviour
         Destroy(currentSelection);
         inputReader.PointEvent -= SnapCurrentSelectionToGrid;
         inputReader.ClickEvent -= PlaceCurrentSelection;
-    }
-
-    void Start()
-    {
-        // clear shopItemParent
-        foreach(Transform child in shopItemParent.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach(var placeable in placeableDatabase.Placeables)
-        {
-            var shopItemGO = Instantiate(shopItemPrefab, shopItemParent.transform);
-            var shopItem = shopItemGO.GetComponent<ShopItem>();
-            shopItem.Initialize(this, placeable);
-        }
     }
 
     void SnapCurrentSelectionToGrid(Vector2 loc)

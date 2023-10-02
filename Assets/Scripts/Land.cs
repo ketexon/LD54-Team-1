@@ -32,7 +32,7 @@ public class Land : Placeable
             base.ValidatePlace(loc) && 
             (
                 (status == LandStatus.Infertile && !GameController.gameController.HasLand(loc)) ||
-                (status == LandStatus.Fertile   && !GameController.gameController.HasFertileLand(loc))
+                (status == LandStatus.Fertile   && GameController.gameController.HasLand(loc) && !GameController.gameController.HasFertileLand(loc))
             )
         );
     }

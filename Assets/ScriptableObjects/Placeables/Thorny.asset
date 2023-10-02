@@ -40,7 +40,7 @@ MonoBehaviour:
     Metal: 0
   ShopSprite: {fileID: 21300000, guid: 23570f3130b5ce143a1b24f0f6593efc, type: 3}
   SpritePrefab: {fileID: 1463023482617577174, guid: b436203f3ec47a84eaecb460c91a3e9a, type: 3}
-  SeedSpriteIndex: 0
+  SeedSpriteIndex: 2
   Buff:
     ShotIntervalMult: 1
     DeltaShotParams:

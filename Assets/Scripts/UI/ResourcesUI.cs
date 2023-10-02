@@ -9,8 +9,8 @@ public class ResourcesUI : MonoBehaviour
     [SerializeField] TMP_Text energyText;
     [SerializeField] TMP_Text metalText;
 
-    string EnergyText(int energy) => $"{energy}<sprite={dropSettings.EnergySpriteIndex}>";
-    string MetalText(int metal) => $"{metal}<sprite={dropSettings.MetalSpriteIndex}>";
+    string EnergyText(int energy) => $"<sprite={dropSettings.EnergySpriteIndex}> {energy}";
+    string MetalText(int metal) => $"<sprite={dropSettings.MetalSpriteIndex}> {metal}";
 
     void Reset()
     {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] int startingMetal;
     [SerializeField] int startingEnergy;
     [SerializeField] List<PlantSO> startingSeeds;
+    [SerializeField] List<TMP_Text> uiText;
 
     public System.Action ResourcesChanged;
     public System.Action<int> MetalChanged;
@@ -81,6 +83,7 @@ public class ResourceManager : MonoBehaviour
     public void AddSeed(PlantSO seed, int count = 1)
     {
         seeds_[seed] = seeds_.GetValueOrDefault(seed) + count;
+        uiText[seed.SeedSpriteIndex].text = seeds_[seed].ToString();
         SeedCountChanged?.Invoke(seed, Seeds[seed]);
         ResourcesChanged?.Invoke();
     }
