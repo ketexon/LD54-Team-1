@@ -51,6 +51,7 @@ MonoBehaviour:
   landTilemap: {fileID: 0}
   otherTilemap: {fileID: 0}
   farmUI: {fileID: 0}
+  waveText: {fileID: 0}
 --- !u!114 &2279133546320533914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,3 +64,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d385f3957dd9a48b194dc63e10b439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingMetal: 100
+  startingEnergy: 100
+  startingSeeds:
+  - {fileID: 11400000, guid: eb463afe67972b14db0fe8951d3a872a, type: 2}
+  - {fileID: 11400000, guid: c2a045b85f418ed498f583e84282d613, type: 2}
+  - {fileID: 11400000, guid: ea4e91e9e944ca84281999e881737237, type: 2}
+  uiText:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

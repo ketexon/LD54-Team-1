@@ -51,19 +51,27 @@ public class FarmingManager : MonoBehaviour
 
     void PlaceCurrentSelection(bool place)
     {
-        if (place && CanPlace() && ResourceManager.Instance.CanAfford(currentSelectionSO) )
+        if (GameController.gameController.IsPaused()) return;
+        if (place && CanPlace())
         {
-            GameObject temp = GameObject.Instantiate(currentSelectionSO.gameObject);
-            try {
-                temp.GetComponent<Placeable>()
-                            .TryPlace(
-                                grid.WorldToCell(currentSelection.transform.position),
-                                currentSelectionSO
-                            );
-            } catch (System.Exception e) {
-                Debug.LogError(e);
-            } finally {
-                Destroy(temp);
+            if (ResourceManager.Instance.CanAfford(currentSelectionSO))
+            {
+                GameObject temp = GameObject.Instantiate(currentSelectionSO.gameObject);
+                try {
+                    temp.GetComponent<Placeable>()
+                                .TryPlace(
+                                    grid.WorldToCell(currentSelection.transform.position),
+                                    currentSelectionSO
+                                );
+                } catch (System.Exception e) {
+                    Debug.LogError(e);
+                } finally {
+                    Destroy(temp);
+                }
+            }
+            else
+            {
+                AudioManager.Instance.PlaySFX(5);
             }
         }
     }
@@ -81,9 +89,15 @@ public class FarmingManager : MonoBehaviour
 
     public bool CanPlace()
     {
+        if (OutOfBounds()) return false;
         PointerEventData ped = new PointerEventData(null) { position = point };
         List<RaycastResult> results = new List<RaycastResult>();
         gr.Raycast(ped, results);
         return results.Count == 0;
+    }
+
+    bool OutOfBounds()
+    {
+        return point.x < 0 || point.x > Screen.width || point.y < 0 || point.y > Screen.height;
     }
 }

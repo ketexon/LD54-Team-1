@@ -15,8 +15,21 @@ MonoBehaviour:
   MetalSpriteIndex: 0
   EnergySpriteIndex: 1
   Pools:
-  - Weight: 10
+  - Weight: 65
     Drops: []
-  - Weight: 5
+  - Weight: 10
+    Drops:
+    - {fileID: 11400000, guid: e8a3d8344593fc24fb26ce54023e4bfa, type: 2}
+  - Weight: 20
     Drops:
     - {fileID: 11400000, guid: f29ac2a9223b71949b86a73e908b48f9, type: 2}
+  - Weight: 5
+    Drops:
+    - {fileID: 11400000, guid: affd9c5ba820ac148a1ebf2f568e0b79, type: 2}
+    - {fileID: 11400000, guid: 0bdba6a846a62b74e8b9548781b8a60f, type: 2}
+    - {fileID: 11400000, guid: 379a40de904cc1c4f873155846f00578, type: 2}
+  - Weight: 5
+    Drops:
+    - {fileID: 11400000, guid: affd9c5ba820ac148a1ebf2f568e0b79, type: 2}
+    - {fileID: 11400000, guid: 0bdba6a846a62b74e8b9548781b8a60f, type: 2}
+    - {fileID: 11400000, guid: 379a40de904cc1c4f873155846f00578, type: 2}

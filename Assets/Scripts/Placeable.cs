@@ -10,9 +10,11 @@ public abstract class Placeable : MonoBehaviour, IHealthEntity
     [SerializeField] protected GameObject textIndicatorPrefab;
 
     float health;
-
+    
     [SerializeField] protected PlaceableSO associatedSO;
     public virtual PlaceableSO GetAssociatedSO() => associatedSO;
+
+    private Coroutine runningCoroutine;
 
     virtual protected void Awake()
     {
@@ -25,21 +27,41 @@ public abstract class Placeable : MonoBehaviour, IHealthEntity
     }
 
     public void Damage(float amount) {
+        if (this.gameObject == null) return;
         health -= amount;
         var indicatorGO = Instantiate(textIndicatorPrefab, transform.position, Quaternion.identity);
         var indicator = indicatorGO.GetComponent<TextIndicator>();
         indicator.Text = $"<color=\"red\">-{amount}</color>";
         if (health <= 0) Die();
-        StartCoroutine(FlashRed());
+        if (runningCoroutine == null) 
+        {
+            runningCoroutine = StartCoroutine(FlashRed());
+        }
+        else
+        {
+            if (this != null)
+            {
+                StopCoroutine(runningCoroutine);
+                runningCoroutine = StartCoroutine(FlashRed());
+            }
+        }
     }
 
     IEnumerator FlashRed()
     {
+        if (this == null) yield return null;
+
         SpriteRenderer sr = this.gameObject.GetComponent<SpriteRenderer>();
+        if (sr == null) sr = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+        if (sr == null) sr = this.transform.GetChild(0).GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+        if (sr == null) sr = this.transform.GetChild(0).GetChild(0).GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+        if (sr == null) yield return null;
+
         Color c = Color.red;
         sr.color = c;
         for (float i = 0f; i <= 1f; i+=.05f)
         {
+            if (this == null) yield return null;
             c.g = i;
             c.b = i;
             sr.color = c;

@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a5b42f7bead2bb940a02bbd27f167c47, type: 3}
-  m_Name: Shroomy Drop
+  m_Name: Viney Seed
   m_EditorClassIdentifier: 
   Metal: 0
-  Seed: {fileID: 0}
-  Energy: 12
+  Seed: {fileID: 11400000, guid: ea4e91e9e944ca84281999e881737237, type: 2}
+  Energy: 0

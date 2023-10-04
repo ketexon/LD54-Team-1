@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour, IHealthEntity
 
     void Start()
     {
-        health = MAX_HEALTH;
+        health = MAX_HEALTH * (1 + (GameController.gameController.GetWave() - 1) * .03f);
     }
     
     public float GetHealth()

@@ -134,7 +134,7 @@ public class EnemyMovement : MonoBehaviour
     {
         if (targets.Count == 0) 
         {
-            Debug.LogWarning($"{this.gameObject.name} has no targets to path to");
+            GameController.gameController.EndGame();
             return null;
         }
 

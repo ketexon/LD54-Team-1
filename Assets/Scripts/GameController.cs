@@ -37,9 +37,14 @@ public class GameController : MonoBehaviour
 
     public PlantBuff NetPlantBuff { get; private set; } = new();
 
-
     [SerializeField] private GameObject farmUI;
+    [SerializeField] private GameObject endCanvas;
+    [SerializeField] private TMP_Text waveText;
+    [SerializeField] private TMP_Text wavesSurvivedText;
     
+    private bool paused;
+    public bool IsPaused() => paused;
+
     private int numEnemies;
     private int wave;
     private GameState gameState;
@@ -69,6 +74,7 @@ public class GameController : MonoBehaviour
         }
         wave = 0;
         numEnemies = 0;
+        paused = false;
         gameState = GameState.Farming;
         RegisterInitialTiles();
     }
@@ -90,6 +96,35 @@ public class GameController : MonoBehaviour
     void OnDisable()
     {
         inputReader.SpawnWaveEvent -= StartNextWave;
+    }
+
+    public void Pause()
+    {
+        AudioManager.Instance.Pause();
+        paused = true;
+        Time.timeScale = 0f;
+    }
+
+    public void Unpause()
+    {
+        paused = false;
+        Time.timeScale = 1f;
+    }
+
+    public void EndGame()
+    {
+        Time.timeScale = 0f;
+        endCanvas.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+    }
+
+    public void ReturnToMenu()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
     public void AddPlaceable(Placeable placeable)
@@ -170,6 +205,9 @@ public class GameController : MonoBehaviour
     {
         if (gameState == GameState.Farming)
         {
+            wave++;
+            waveText.text = $"wave {wave}";
+            wavesSurvivedText.text = $"waves survived\n{wave}";
             gameState = GameState.EnemiesSpawning;
             farmUI.SetActive(false);
             StartCoroutine(SpawnEnemies());
@@ -179,7 +217,6 @@ public class GameController : MonoBehaviour
     IEnumerator SpawnEnemies()
     {
         Vector3 pos;
-        wave++;
         for(int i = 0; i < Mathf.Pow(wave, 2); i++)
         {
             pos = GetRandomSpawnPoint();
@@ -229,4 +266,5 @@ public class GameController : MonoBehaviour
 
     /* Getters */
     public Grid GetGrid() { return grid; }
+    public int GetWave() { return wave; }
 }

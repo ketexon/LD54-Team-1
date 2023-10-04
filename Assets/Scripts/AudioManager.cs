@@ -12,6 +12,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource sfxSource;
 
     [SerializeField] private List<AudioClip> audioClips;
+    [SerializeField] private GameObject optionsCanvas;
 
     private float masterVolume=1f;
     private float musicVolume=1f;
@@ -32,6 +33,25 @@ public class AudioManager : MonoBehaviour
     {
         musicSource.PlayScheduled(AudioSettings.dspTime + .1f);
         loopSource.PlayScheduled(AudioSettings.dspTime + .1f + 1.69f);
+    }
+
+    public void ExternReturnToMenu()
+    {
+        if (GameController.gameController != null) GameController.gameController.ReturnToMenu();
+        optionsCanvas.SetActive(false);
+    }
+
+    public void Pause()
+    {
+        PlayButtonSFX();
+        optionsCanvas.SetActive(true);
+    }
+
+    public void Unpause()
+    {
+        PlayButtonSFX();
+        optionsCanvas.SetActive(false);
+        if (GameController.gameController != null) GameController.gameController.Unpause();
     }
 
     public void PlayButtonSFX()

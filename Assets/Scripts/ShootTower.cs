@@ -6,7 +6,6 @@ public class OrbTower : Tower
 {
     public static Vector3 TOWER_OFFSET = new Vector3(0f,0.7f,0f);
     [SerializeField] float shotInterval = 1.0f;
-    [SerializeField] ShotParams shotParams = ShotParams.Default;
     [SerializeField] GameObject shotPrefab;
 
     [SerializeField] Sprite inactiveSprite;
@@ -40,11 +39,9 @@ public class OrbTower : Tower
             float theta = Mathf.Atan2(delta.y, delta.x);
             var go = Instantiate(shotPrefab, transform.position + TOWER_OFFSET, Quaternion.Euler(0, 0, theta * 180 / Mathf.PI));
             var shot = go.GetComponent<Shot>();
-            shot.Initialize(shotParams);
-            AudioManager.Instance.PlaySFX(0);
-
             var buff = GameController.gameController.NetPlantBuff;
-            shotParams += buff.DeltaShotParams;
+            shot.Initialize(ShotParams.Default + buff.DeltaShotParams);
+            AudioManager.Instance.PlaySFX(0);
 
             shotReadyTime = Time.time + shotInterval * buff.ShotIntervalMult;
         }
